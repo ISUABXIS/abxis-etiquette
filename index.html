@@ -370,21 +370,21 @@
     .hero-back { transform: rotateY(180deg); background: #f0f9f8; }
     .hero-img { width: 100%; height: 100%; object-fit: contain; flex: 1; }
 
-    /* 최하단 캠페인 응원 가로 섹션 */
+  /* 최하단 캠페인 응원 가로 섹션 */
     .cheer-section {
       max-width: 1100px;
       margin: 32px auto 0;
       padding: 0 20px;
     }
 
-      .cheer-container {
+    .cheer-container {
       background: linear-gradient(135deg, #e8f4f4 0%, #d8ecec 100%);
       border: 1px solid #c2e0e0;
       border-radius: 20px;
       padding: 24px 28px;
-      color: #1a2e2e; /* 👈 글자색도 어두운 톤으로 변경 */
+      color: #1a2e2e;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 24px;
       box-shadow: 0 4px 15px rgba(13, 138, 138, 0.06);
     }
@@ -392,8 +392,8 @@
       .cheer-container { flex-direction: column; text-align: center; padding: 20px; }
     }
 
-    /* 좋아요 응원 버튼 (B안) */
-    .like-box { flex-shrink: 0; }
+    /* 좋아요 버튼 */
+    .like-box { flex-shrink: 0; padding-top: 4px; }
     .like-btn {
       background: #ffffff;
       color: #0d8a8a;
@@ -406,7 +406,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
       transition: all 0.25s ease;
     }
     .like-btn:hover { transform: scale(1.04); background: #f0fdfd; }
@@ -420,18 +420,19 @@
     }
     .like-btn.active .like-count { background: rgba(255, 255, 255, 0.25); color: white; }
 
-    /* 한 줄 응원 한마디 입력 & 전광판 (A안) */
-    .comment-box { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 10px; }
+    /* 한 줄 응원 한마디 입력 & 스크롤 리스트 */
+    .comment-box { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 12px; }
     
     .comment-input-wrap { display: flex; gap: 8px; width: 100%; }
     .comment-input-wrap input {
       flex: 1;
       padding: 10px 16px;
       border-radius: 10px;
-      border: none;
+      border: 1px solid #bce0e0;
       font-size: 13px;
       font-family: inherit;
       outline: none;
+      background: #ffffff;
     }
     .comment-submit-btn {
       background: #ff7e36;
@@ -447,33 +448,53 @@
     }
     .comment-submit-btn:hover { background: #e66520; }
 
-    /* 전광판 슬라이드 로직 */
-      .comment-ticker-box {
+    /* 댓글 3개 높이 고정 스크롤 박스 */
+    .comment-scroll-box {
       background: #ffffff;
       border: 1px solid #d2ecec;
+      border-radius: 12px;
+      padding: 10px 14px;
+      max-height: 130px; /* 딱 댓글 3개 들어가는 고정 높이 */
+      overflow-y: auto; /* 스크롤바 생성 */
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* 커스텀 스크롤바 디자인 */
+    .comment-scroll-box::-webkit-scrollbar {
+      width: 6px;
+    }
+    .comment-scroll-box::-webkit-scrollbar-thumb {
+      background: #0d8a8a;
       border-radius: 10px;
-      padding: 8px 14px;
+    }
+    .comment-scroll-box::-webkit-scrollbar-track {
+      background: #eef7f7;
+    }
+
+    .comment-item {
+      font-size: 13px;
+      color: #2b2b2b;
       display: flex;
       align-items: center;
-      gap: 10px;
-      overflow: hidden;
+      gap: 8px;
+      line-height: 1.4;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed #eaf2f2;
     }
-    .ticker-badge {
-      font-size: 11px;
-      font-weight: 800;
-      background: #ff7e36;
-      color: white;
-      padding: 3px 8px;
-      border-radius: 6px;
-      white-space: nowrap;
+    .comment-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
     }
-      .ticker-text {
-      font-size: 13px;
-      color: #2b2b2b; /* 👈 전광판 글자색도 어둡게 정돈 */
+    .comment-item-badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: #e8f4f4;
+      color: #0d8a8a;
+      padding: 2px 6px;
+      border-radius: 4px;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: opacity 0.3s ease;
     }
   </style>
 </head>
@@ -649,7 +670,7 @@
   <section class="cheer-section">
     <div class="cheer-container">
       
-      <!-- B안: 좋아요 & 응원 버튼 -->
+      <!-- 좋아요 & 응원 버튼 -->
       <div class="like-box">
         <button class="like-btn" id="likeBtn" onclick="toggleLike()">
           <span class="like-icon">💖</span>
@@ -658,17 +679,16 @@
         </button>
       </div>
 
-      <!-- A안: 한 줄 응원 한마디 등록 & 전광판 -->
+      <!-- 한 줄 응원 한마디 등록 & 3개 고정 스크롤 리스트 -->
       <div class="comment-box">
         <div class="comment-input-wrap">
           <input type="text" id="commentInput" placeholder="이번주 컨텐츠가 마음에 드시면 따뜻한 한마디를 남겨주세요! (최대 30자)" maxlength="30" onkeypress="if(event.keyCode==13) addComment()">
           <button class="comment-submit-btn" onclick="addComment()">등록</button>
         </div>
 
-        <!-- 실시간 응원 전광판 롤링 영역 -->
-        <div class="comment-ticker-box">
-          <span class="ticker-badge">💬 응원 한마디</span>
-          <div class="ticker-text" id="tickerText">"좋은 캠페인 만들어주셔서 감사합니다! 힘내세요 💪"</div>
+        <!-- 스크롤 가능한 전체 댓글 리스트 영역 -->
+        <div class="comment-scroll-box" id="commentList">
+          <!-- 스크립트에서 댓글 항목이 여기에 생성됩니다 -->
         </div>
       </div>
 
@@ -817,19 +837,72 @@
       }
     }
  
-    // 하단 응원하기(좋아요) 및 댓글 롤링 전광판 시스템
+// 하단 응원하기(좋아요) 및 스크롤 댓글 시스템
     const KEY_LIKE = "week1_cheer_like";
     let likeCount = 0;
     let hasLiked = false;
 
-    // 초기 댓글 목록 데이터
-    let comments = [
-      "좋은 캠페인 만들어주셔서 감사합니다! 힘내세요 💪",
-      "에티켓 가이드 너무 유익하네요! 팀원들과 공유할게요 👍",
-      "제작하신 분 진짜 센스 최고입니다! 응원해요 🎉",
+    // 초기 댓글 데이터 (로컬 저장소에 저장된 댓글이 없으면 사용)
+    const defaultComments = [
+      "이수앱지스 화이팅!! CM, CA도 화이팅!!! 💪",
+      "에티켓 가이드 너무 재밌어요! 팀원들과 공유할게요 👍",
       "이번 주 콘텐츠 대박! 2주차도 벌써 기대됩니다 ✨"
     ];
-    let commentIndex = 0;
+
+    let comments = [];
+
+    // 초기 데이터 로드
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchLikes();
+      loadComments();
+    });
+
+    // 로컬 스토리지에서 댓글 가져오기 및 출력
+    function loadComments() {
+      const saved = localStorage.getItem("abxis_comments");
+      if (saved) {
+        comments = JSON.parse(saved);
+      } else {
+        comments = [...defaultComments];
+      }
+      renderComments();
+    }
+
+    // 댓글 목록 화면에 출력하기
+    function renderComments() {
+      const container = document.getElementById('commentList');
+      container.innerHTML = '';
+
+      comments.forEach(text => {
+        const item = document.createElement('div');
+        item.className = 'comment-item';
+        item.innerHTML = `<span class="comment-item-badge">💬</span> <span>${text}</span>`;
+        container.appendChild(item);
+      });
+    }
+
+    // 새 댓글 등록하기
+    function addComment() {
+      const input = document.getElementById('commentInput');
+      const text = input.value.trim();
+
+      if (!text) {
+        alert('응원 메시지를 입력해 주세요!');
+        return;
+      }
+
+      comments.unshift(text); // 최신 댓글을 상단에 추가
+      localStorage.setItem("abxis_comments", JSON.stringify(comments)); // 로컬에 저장
+      
+      renderComments();
+      input.value = '';
+      
+      // 맨 위로 스크롤 이동
+      const container = document.getElementById('commentList');
+      container.scrollTop = 0;
+
+      alert('소중한 한마디가 등록되었습니다! 😊');
+    }
 
     async function fetchLikes() {
       try {
@@ -842,7 +915,6 @@
       }
     }
 
-    // 좋아요 버튼 클릭 시 (+1 / -1)
     function toggleLike() {
       const btn = document.getElementById('likeBtn');
       const countEl = document.getElementById('likeCount');
@@ -859,39 +931,6 @@
         fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKE}/down`);
       }
       countEl.innerText = likeCount;
-    }
-
-    // 댓글 등록 함수
-    function addComment() {
-      const input = document.getElementById('commentInput');
-      const text = input.value.trim();
-
-      if (!text) {
-        alert('응원 메시지를 입력해 주세요!');
-        return;
-      }
-
-      comments.unshift(`"${text}"`); // 새 댓글을 맨 앞에 추가
-      commentIndex = 0;
-      
-      const tickerText = document.getElementById('tickerText');
-      tickerText.innerText = comments[0];
-      
-      input.value = '';
-      alert('따뜻한 응원이 등록되었습니다! 축하해 주세요 💖');
-    }
-
-    // 댓글 롤링 전환 함수
-    function rotateComments() {
-      if (comments.length === 0) return;
-      const tickerText = document.getElementById('tickerText');
-      tickerText.style.opacity = '0';
-
-      setTimeout(() => {
-        commentIndex = (commentIndex + 1) % comments.length;
-        tickerText.innerText = comments[commentIndex];
-        tickerText.style.opacity = '1';
-      }, 300);
     }
   </script>
 </body>
