@@ -848,40 +848,45 @@
       }
     }
 
-    // 4. 실시간 댓글 불러오기
+
+// 4. 실시간 댓글 불러오기 (예시 댓글 상시 유지 버전)
     function listenForComments() {
+      // 기본 예시 댓글 3개
+      const defaultComments = [
+        "이수앱지스 화이팅!! CM, CA도 화이팅!!! 💪",
+        "에티켓 가이드 너무 재밌어요! 팀원들과 공유할게요 👍",
+        "이번 주 콘텐츠 대박! 2주차도 벌써 기대됩니다 ✨"
+      ];
+
       commentsRef.on('value', (snapshot) => {
         const data = snapshot.val();
         const container = document.getElementById('commentList');
         container.innerHTML = '';
 
+        // 1) 사용자가 새로 입력한 DB 댓글들을 최신순으로 위에 배치
         if (data) {
-          const commentsArray = Object.values(data).reverse();
-          commentsArray.forEach(item => {
+          const userCommentsArray = Object.values(data).reverse();
+          userCommentsArray.forEach(item => {
             const div = document.createElement('div');
             div.className = 'comment-item';
             div.innerHTML = `<span class="comment-item-badge">💬</span> <span>${escapeHtml(item.text)}</span>`;
             container.appendChild(div);
           });
-        } else {
-          // DB가 비어있을 때 기본 예시 댓글 3개
-          const defaultComments = [
-            "이수앱지스 화이팅!! CM, CA도 화이팅!!! 💪",
-            "에티켓 가이드 너무 재밌어요! 팀원들과 공유할게요 👍",
-            "이번 주 콘텐츠 대박! 2주차도 벌써 기대됩니다 ✨"
-          ];
-          
-          defaultComments.forEach(text => {
-            const div = document.createElement('div');
-            div.className = 'comment-item';
-            div.innerHTML = `<span class="comment-item-badge">💬</span> <span>${escapeHtml(text)}</span>`;
-            container.appendChild(div);
-          });
         }
+
+        // 2) 기본 예시 댓글 3개를 항상 아래에 함께 표시
+        defaultComments.forEach(text => {
+          const div = document.createElement('div');
+          div.className = 'comment-item';
+          div.innerHTML = `<span class="comment-item-badge">💬</span> <span>${escapeHtml(text)}</span>`;
+          container.appendChild(div);
+        });
+
       }, (error) => {
         console.error("Firebase 읽기 권한 오류:", error);
       });
     }
+
 
     // 5. 새 댓글 DB에 등록하기
     function addComment() {
