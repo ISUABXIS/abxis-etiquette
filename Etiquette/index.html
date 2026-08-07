@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>앱지스 에티켓 연구소</title>
+  
+  <style>
+    /* 1. 본문용: Pretendard-Regular.woff2 */
+    @font-face {
+      font-family: 'Pretendard-Custom';
+      src: url('./Pretendard-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    /* 2. 메인 타이틀용: SB 어그로 B.ttf */
+    @font-face {
+      font-family: 'SBAggroB';
+      src: url('./SB 어그로 B.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+    }
+    
+    /* 3. 메인 메시지용: Mona12.woff2 */
+    @font-face {
+      font-family: 'Mona12';
+      src: url('./Mona12.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    :root {
+      --bg-color: #f6f9f9;
+      --main-teal: #0d8a8a;
+      --main-teal-dark: #095c5c;
+      --point-orange: #ff7e36;
+      --card-bg: #ffffff;
+      --text-main: #2b2b2b;
+      --text-sub: #666666;
+      --border-color: #e2ecec;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body { 
+      font-family: 'Pretendard-Custom', sans-serif !important; 
+      background-color: var(--bg-color); 
+      color: var(--text-main); 
+      padding-bottom: 80px; 
+      line-height: 1.5;
+    }
+
+    /* 상단 배너 헤더 영역 */
+    header { 
+      background: white;
+      border-bottom: 1px solid var(--border-color); 
+      padding: 24px 20px 20px; 
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(13, 138, 138, 0.04);
+    }
+
+    .header-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .header-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--main-teal);
+      background: #e0f2f1;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    .source-chip {
+      font-size: 15px;
+      color: #667777;
+      background: #f0f7f7;
+      border: 1px solid #d0e0e0;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    /* 메인 비주얼 이미지 배너 */
+    .header-banner-box {
+      width: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border-color);
+      background: #e8f4f4;
+    }
+
+    .header-banner-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* 네비게이션 & 메시지 영역 컨테이너 */
+    .nav-container {
+      max-width: 1100px;
+      margin: 25px auto 0;
+      padding: 0 20px;
+    }
+
+    .week-nav { display: flex; justify-content: center; gap: 12px; margin-bottom: 16px; }
+    .week-tab { flex: 1; background: white; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.25s ease; font-weight: 600; font-size: 18px; }
+    .week-tab.active { border-color: var(--main-teal); background: #eaf6f6; color: var(--main-teal-dark); font-weight: 700; box-shadow: 0 4px 10px rgba(13, 138, 138, 0.1); }
+    .week-tab.disabled { opacity: 0.55; cursor: not-allowed; background: #f5f5f5; }
+
+    /* 전광판 배너 카드 */
+    .week-message-card {
+      background: #ffffff;
+      border: 1.5px solid #d2e7e7;
+      border-left: 5px solid var(--main-teal);
+      border-radius: 14px;
+      padding: 14px 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow: hidden;
+    }
+    
+    .week-message-label {
+      font-size: 20px;
+      font-weight: 800;
+      background: var(--main-teal);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      z-index: 2;
+    }
+    
+    .ticker-wrap {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .week-message-text {
+      display: inline-block;
+      white-space: nowrap;
+      padding-left: 100%;
+      animation: marquee 18s linear infinite;
+      font-family: 'Mona12', 'Pretendard-Custom', sans-serif !important;
+      font-size: 18px;
+      color: #0d5c63;
+    }
+
+    .ticker-wrap:hover .week-message-text {
+      animation-play-state: paused;
+    }
+
+    @keyframes marquee {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
+
+    /* 메인 그리드 컨테이너 */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    @media (max-width: 850px) { 
+      .container { grid-template-columns: 1fr; }
+      .header-top-bar { flex-direction: column; gap: 8px; }
+    }
+
+    /* 공통 카드 섹션 */
+    .section-card { background: white; border-radius: 20px; border: 1px solid var(--border-color); padding: 28px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); display: flex; flex-direction: column; }
+    .section-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--main-teal-dark); display: flex; align-items: center; gap: 8px; }
+    .section-subtext { font-size: 15px; color: var(--text-sub); margin-bottom: 20px; word-break: keep-all; }
+
+    /* 1. 네컷카툰 섹션 (이미지 확대 및 상자 맞춤) */
+    .cartoon-box { 
+      width: 100%; 
+      border-radius: 14px; 
+      overflow: hidden; 
+      border: 1px solid var(--border-color); 
+      background: #fafafa; 
+      text-align: center; 
+      flex: 1; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      padding: 6px;
+    }
+    .cartoon-img { 
+      width: 100%; 
+      max-height: 650px; 
+      object-fit: contain; 
+    }
+
+    /* 2. 밸런스 게임 섹션 (모던 트렌디 UI 개편) */
+    .balance-box {
+      background: linear-gradient(135deg, #ffffff 0%, #f7fbfb 100%);
+      border: 1px solid #e1ecec;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 25px rgba(13, 138, 138, 0.05);
+    }
+
+    .balance-q {
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #1a2e2e;
+      line-height: 1.5;
+      background: #ffffff;
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: 1px solid #e2ecec;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .balance-options { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 16px; 
+    }
+    @media (max-width: 550px) { .balance-options { grid-template-columns: 1fr; } }
+
+    .option-card {
+      background: #ffffff;
+      border: 1.5px solid #e2ecec;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .option-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .option-card.selected-a { 
+      border-color: var(--point-orange); 
+      background: #fffcf9; 
+      box-shadow: 0 8px 20px rgba(255, 126, 54, 0.15); 
+    }
+    .option-card.selected-b { 
+      border-color: var(--main-teal); 
+      background: #f4fafb; 
+      box-shadow: 0 8px 20px rgba(13, 138, 138, 0.15); 
+    }
+
+    .option-title { font-weight: 800; font-size: 16px; color: var(--point-orange); margin-bottom: 8px; }
+    .option-title.title-b { color: var(--main-teal); }
+    .option-desc { font-size: 14px; color: var(--text-sub); line-height: 1.55; word-break: keep-all; flex: 1; }
+
+    /* 하단 버튼 & 카운트 영역 */
+    .vote-action-area { margin-top: 18px; text-align: center; }
+    
+    .vote-btn {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      display: block;
+      text-align: center;
+      line-height: 1.4;
+    }
+    
+    .btn-sub-text {
+      font-size: 11px;
+      font-weight: 400;
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    .btn-a { background: #fff0e6; color: #e65c00; }
+    .btn-a:hover { background: var(--point-orange); color: white; }
+    .btn-a.active { background: linear-gradient(135deg, #ff7e36, #ff6000); color: white; box-shadow: 0 4px 12px rgba(255, 126, 54, 0.35); }
+
+    .btn-b { background: #e6f5f5; color: var(--main-teal-dark); }
+    .btn-b:hover { background: var(--main-teal); color: white; }
+    .btn-b.active { background: linear-gradient(135deg, #0d8a8a, #086666); color: white; box-shadow: 0 4px 12px rgba(13, 138, 138, 0.35); }
+
+    .vote-count-text {
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #889999;
+    }
+
+    .poll-summary {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid #e8f0f0;
+      text-align: center;
+    }
+    .total-count-text {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--main-teal-dark);
+      background: #e8f4f4;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .result-msg { 
+      font-size: 15px; 
+      font-weight: 600; 
+      color: #334444; 
+      line-height: 1.55; 
+      background: #ffffff; 
+      padding: 14px 18px; 
+      border-radius: 12px; 
+      border: 1px solid #e2ecec;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    /* 3. 속마음 팩폭 번역기 폰트 사이즈 일괄 확대 */
+    .bad-tag { 
+      font-size: 13px !important; 
+    } 
+    .flip-front p { 
+      font-size: 15px !important; 
+      line-height: 1.4;
+    }
+    .flip-back p:first-child { 
+      font-size: 13px !important; 
+    }
+    .flip-back p:last-child { 
+      font-size: 14px !important; 
+    }
+
+    .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; }
+    @media (max-width: 550px) { .flip-grid { grid-template-columns: 1fr; } }
+    .flip-card { perspective: 1000px; height: 160px; cursor: pointer; }
+    .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+    .flip-front { background: #fbfcfc; color: var(--text-main); }
+    .flip-back { background: #113f48; color: white; transform: rotateY(180deg); }
+    
+    .bad-tag { font-size: 11px; background: #ffeded; color: #d9534f; padding: 3px 8px; border-radius: 6px; margin-bottom: 8px; font-weight: 700; }
+    .do-tag { font-size: 11px; background: #e8f8f5; color: #2e7d32; padding: 3px 8px; border-radius: 6px; margin-bottom: 6px; font-weight: 700; }
+
+    /* 4. 빌런 & 히어로 도감 */
+    .villain-hero-container { flex: 1; min-height: 340px; }
+    .hero-flip-card { perspective: 1000px; width: 100%; height: 100%; min-height: 340px; cursor: pointer; }
+    .hero-flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+    .hero-flip-card.flipped .hero-flip-inner { transform: rotateY(180deg); }
+    .hero-front, .hero-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 14px; border: 1px solid var(--border-color); overflow: hidden; display: flex; flex-direction: column; background: #fafafa; }
+    .hero-back { transform: rotateY(180deg); background: #f0f9f8; }
+    .hero-img { width: 100%; height: 100%; object-fit: contain; flex: 1; }
+
+    /* 최하단 캠페인 응원 가로 섹션 */
+    .cheer-section {
+      max-width: 1100px;
+      margin: 32px auto 0;
+      padding: 0 20px;
+    }
+
+      .cheer-container {
+      background: linear-gradient(135deg, #e8f4f4 0%, #d8ecec 100%);
+      border: 1px solid #c2e0e0;
+      border-radius: 20px;
+      padding: 24px 28px;
+      color: #1a2e2e; /* 👈 글자색도 어두운 톤으로 변경 */
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      box-shadow: 0 4px 15px rgba(13, 138, 138, 0.06);
+    }
+    @media (max-width: 850px) {
+      .cheer-container { flex-direction: column; text-align: center; padding: 20px; }
+    }
+
+    /* 좋아요 응원 버튼 (B안) */
+    .like-box { flex-shrink: 0; }
+    .like-btn {
+      background: #ffffff;
+      color: #0d8a8a;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      transition: all 0.25s ease;
+    }
+    .like-btn:hover { transform: scale(1.04); background: #f0fdfd; }
+    .like-btn.active { background: #ff7e36; color: white; }
+    .like-count {
+      background: rgba(13, 138, 138, 0.1);
+      color: #0d8a8a;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+    .like-btn.active .like-count { background: rgba(255, 255, 255, 0.25); color: white; }
+
+    /* 한 줄 응원 한마디 입력 & 전광판 (A안) */
+    .comment-box { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 10px; }
+    
+    .comment-input-wrap { display: flex; gap: 8px; width: 100%; }
+    .comment-input-wrap input {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+    .comment-submit-btn {
+      background: #ff7e36;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .comment-submit-btn:hover { background: #e66520; }
+
+    /* 전광판 슬라이드 로직 */
+      .comment-ticker-box {
+      background: #ffffff;
+      border: 1px solid #d2ecec;
+      border-radius: 10px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .ticker-badge {
+      font-size: 11px;
+      font-weight: 800;
+      background: #ff7e36;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+      .ticker-text {
+      font-size: 13px;
+      color: #2b2b2b; /* 👈 전광판 글자색도 어둡게 정돈 */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: opacity 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <!-- 상단 정보 뱃지 바 -->
+      <div class="header-top-bar">
+        <div class="header-badge">🧪 CA 조직문화 개선과제 #4 공감과 존중을 위한 에티켓 강화</div>
+        <div class="source-chip">모든 콘텐츠는 숨숨집🐱에 접수된 실제 사례를 기반으로 제작되었습니다.</div>
+      </div>
+      
+      <!-- 메인 통이미지 배너 -->
+      <div class="header-banner-box">
+        <img src="헤더이미지.png" alt="앱지스 에티켓 연구소 메인 배너" class="header-banner-img">
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-container">
+    <nav class="week-nav">
+      <div class="week-tab active" onclick="switchWeek(1)">1주차: 협업의 법칙</div>
+      <div class="week-tab disabled" onclick="alert('2주차는 차주에 오픈됩니다!')">2주차: 피드백 잔혹사 탈출기</div>
+      <div class="week-tab disabled" onclick="alert('3주차 준비 중입니다!')">3주차: 감정 회복 연구소</div>
+      <div class="week-tab disabled" onclick="alert('4주차 준비 중입니다!')">4주차: 오피스 빌런 퇴치법</div>
+    </nav>
+
+    <!-- 전광판 태그 영역 -->
+    <div class="week-message-card">
+      <span class="week-message-label" id="weekLabel">1주차</span>
+      <div class="ticker-wrap">
+        <p class="week-message-text" id="mainMessage">일하려고 만났지, 싸우려고 만났나요? 서로 '뒷목' 잡지 않기 위한 협업 가이드</p>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- 1. 사례 카툰 -->
+    <section class="section-card">
+      <div class="section-title">🖼️ 이번 주 사례 카툰</div>
+      <p class="section-subtext">나 혹은 내 동료의 이야기일지도 몰라요. 카툰을 보며 함께 공감해 보세요!</p>
+      <div class="cartoon-box">
+        <img src="cartoon_week1.png" alt="1주차 네컷카툰" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Week+1+Co-working+Cartoon';">
+      </div>
+    </section>
+
+    <!-- 2. 에티켓 밸런스 게임 -->
+    <section class="section-card">
+      <div class="section-title">🎮 에티켓 밸런스 게임</div>
+      <p class="section-subtext">밸런스 게임으로 알아보는 앱지스 피플의 성향! 당신의 선택은?</p>
+      
+      <div class="balance-box">
+        <div class="balance-q">기분 좋게 출근한 당신 🧑🏻‍💼<br>함께 일할 때 뒷목 잡게 만드는 매운맛 동료는 🌶️?</div>
+        
+        <div class="balance-options">
+          <!-- A 옵션 카드 -->
+          <div class="option-card" id="cardA">
+            <div class="option-title">A. "일단 해주세요" <br>🚀 냅다 투척형</div>
+            <div class="option-desc">배경, 목적, 기한 생략! <br>메일로 파일 달랑 던져놓고 <br>"확인 후 처리 부탁요"<br>당황스러운 순간<br>(추리력 시험중이세요? 🕵️‍♂️)</div>
+            
+            <div class="vote-action-area">
+              <button class="vote-btn btn-a" id="btnA" onclick="vote('A')">👍 A 선택하기</button>
+              <div class="vote-count-text" id="countBadgeA">공감 0회</div>
+            </div>
+          </div>
+
+          <!-- B 옵션 카드 -->
+          <div class="option-card" id="cardB">
+            <div class="option-title title-b">B. "제가 그걸 왜요?"<br>🛡️ 자동 반사형</div>
+            <div class="option-desc">정성스럽게 설명하며 요청했더니, 대안도 없이<br> "제 업무 아닌데요?"<br>한마디로 모른 척<br>(차갑다...차가워.... 🧊)</div>
+            
+            <div class="vote-action-area">
+              <button class="vote-btn btn-b" id="btnB" onclick="vote('B')">👍 B 선택하기</button>
+              <div class="vote-count-text" id="countBadgeB">공감 0회</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 하단 총 투표수 및 안내 메시지 -->
+        <div class="poll-summary" id="pollSummary" style="display: none;">
+          <div class="total-count-text">🔥 현재 총 <span id="totalCount">0</span>명이 공감 투표에 참여했습니다!</div>
+          <div class="result-msg">
+            💡요청할 땐 핵심 맥락과 기한을, <br> 거절할 땐 따뜻한 대안을 함께 전달해 보는 건 어떨까요?
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 속마음 팩폭 번역기 -->
+    <section class="section-card">
+      <div class="section-title">💬 속마음 팩폭 번역기</div>
+      <p class="section-subtext">말 한 끗 차이로 바뀌는 업무 분위기!<br>카드를 뒤집어 팩폭 속마음과 스마트한 대안을 확인하세요.</p>
+      
+      <div class="flip-grid">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="bad-tag">Bad Request (요청자)</span>
+              <p style="font-weight:bold; font-size:13px;">"OO님, 이거 지금 바로<br>확인 가능한가요? 급합니다!" 😫</p>
+            </div>
+            <div class="flip-back">
+              <p style="font-size:11px; color:#ffb3b3;">🫥속마음: "얼마나 급한 건지,<br>뭘 봐달라는 건지 정보가 1도 없네."</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px;">💡 Do: "OO님, A 프로젝트 건<br>관련해 오늘 15시까지 3번 항목<br>확인 가능하실까요?"</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="bad-tag">Bad Reply (피요청자)</span>
+              <p style="font-weight:bold; font-size:13px;">(메시지 읽고<br>2시간째 답장 없음...)<br>😶‍🌫️</p>
+            </div>
+            <div class="flip-back">
+              <p style="font-size:11px; color:#ffb3b3;">🫥속마음: "읽었으면 읽었다,<br>나중에 본다 말이라도 해줘요ㅠ"</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px;">💡 Do: "지금 회의 중이라<br>16시 이후에 말씀드리겠습니다!"</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="bad-tag">Bad Request (요청자)</span>
+              <p style="font-weight:bold; font-size:13px;">"지난번에 말씀드린 그거,<br>알아서 잘 정리해서 주세요."<br>🌀</p>
+            </div>
+            <div class="flip-back">
+              <p style="font-size:11px; color:#ffb3b3;">🫥속마음: "기준도 없고 목적도<br>없는데 어떻게 '알아서' 하나요?"</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px;">💡 Do: "임원 보고용이라<br>최근 3개월 수치만 표로<br>정리 부탁드립니다!"</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <span class="bad-tag">Bad Reply (피요청자)</span>
+              <p style="font-weight:bold; font-size:13px;">"그건 제 업무가 아니라서<br>못 해드립니다"<br>🙅‍♂️</p>
+            </div>
+            <div class="flip-back">
+              <p style="font-size:11px; color:#ffb3b3;">🫥속마음: "단칼에 안 된다고만<br>하지 말고 대안이라도 알려줘요..."</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px;">💡 Do: "해당 건은 B팀 담당이라<br>B팀 OO님께 문의하시면<br>안내받으실 수 있습니다!"</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 빌런 & 히어로 도감 -->
+    <section class="section-card">
+      <div class="section-title">🪪 오늘의 빌런 & 히어로 프로필</div>
+      <p class="section-subtext">나는 오늘 일터에서 어떤 캐릭터였을까요? 빌런👾???히어로🦸‍♂️???<br>빌런 카드를 클릭해 히어로로 변신해보아요!</p>
+      
+      <div class="villain-hero-container">
+        <div class="hero-flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="hero-flip-inner">
+            <div class="hero-front">
+              <img src="villain_week1.png" alt="1주차 빌런" class="hero-img" onerror="this.src='https://via.placeholder.com/500x350/ffeded/d9534f?text=👾+Villain:+Ping-Pong+Villain';">
+            </div>
+            <div class="hero-back">
+              <img src="hero_week1.png" alt="1주차 히어로" class="hero-img" onerror="this.src='https://via.placeholder.com/500x350/e8f8f5/0d8a8a?text=🦸‍♂️+Hero:+Tiki-Taka+Hero';">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 최하단 캠페인 응원 & 좋아요 가로 섹션 -->
+  <section class="cheer-section">
+    <div class="cheer-container">
+      
+      <!-- B안: 좋아요 & 응원 버튼 -->
+      <div class="like-box">
+        <button class="like-btn" id="likeBtn" onclick="toggleLike()">
+          <span class="like-icon">💖</span>
+          <span class="like-text">컨텐츠 호감도 조사</span>
+          <span class="like-count" id="likeCount">0</span>
+        </button>
+      </div>
+
+      <!-- A안: 한 줄 응원 한마디 등록 & 전광판 -->
+      <div class="comment-box">
+        <div class="comment-input-wrap">
+          <input type="text" id="commentInput" placeholder="이번주 컨텐츠가 마음에 드시면 따뜻한 한마디를 남겨주세요! (최대 30자)" maxlength="30" onkeypress="if(event.keyCode==13) addComment()">
+          <button class="comment-submit-btn" onclick="addComment()">등록</button>
+        </div>
+
+        <!-- 실시간 응원 전광판 롤링 영역 -->
+        <div class="comment-ticker-box">
+          <span class="ticker-badge">💬 응원 한마디</span>
+          <div class="ticker-text" id="tickerText">"좋은 캠페인 만들어주셔서 감사합니다! 힘내세요 💪"</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    const NAMESPACE = "abxis_etiquette_lab_2026";
+    const KEY_A = "week1_option_a";
+    const KEY_B = "week1_option_b";
+
+    let countA = 0;
+    let countB = 0;
+    let currentVote = null; // 'A', 'B', 또는 null
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchVotes();
+      fetchLikes();
+      setInterval(rotateComments, 3500); // 3.5초마다 전광판 댓글 교체
+    });
+
+    // 서버 데이터 가져오기
+    async function fetchVotes() {
+      try {
+        const [resA, resB] = await Promise.all([
+          fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_A}/`),
+          fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_B}/`)
+        ]);
+        
+        const dataA = await resA.json();
+        const dataB = await resB.json();
+
+        countA = typeof dataA.count === 'number' ? dataA.count : 0;
+        countB = typeof dataB.count === 'number' ? dataB.count : 0;
+
+        updateUI();
+      } catch (error) {
+        console.log("초기 로딩 오류 (기본값 설정)", error);
+        updateUI();
+      }
+    }
+
+    // 투표 클릭 함수 (즉시 UI 변경하는 낙관적 업데이트 기법 적용)
+    function vote(type) {
+      let targetKey = null;
+      let action = null; // 'up' 또는 'down'
+
+      // 1. 취소하는 경우 (같은 버튼 다시 누름)
+      if (currentVote === type) {
+        if (type === 'A') countA = Math.max(0, countA - 1);
+        if (type === 'B') countB = Math.max(0, countB - 1);
+        
+        targetKey = type === 'A' ? KEY_A : KEY_B;
+        action = 'down';
+        currentVote = null;
+      } 
+      // 2. 재선택하는 경우 (A -> B 또는 B -> A)
+      else if (currentVote !== null) {
+        const oldKey = currentVote === 'A' ? KEY_A : KEY_B;
+        const newKey = type === 'A' ? KEY_A : KEY_B;
+        
+        if (currentVote === 'A') countA = Math.max(0, countA - 1);
+        else countB = Math.max(0, countB - 1);
+
+        if (type === 'A') countA++;
+        else countB++;
+
+        // 백그라운드 서버 전송 (기존 거 -1, 새 거 +1)
+        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${oldKey}/down`);
+        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${newKey}/up`);
+
+        currentVote = type;
+      } 
+      // 3. 신규 투표인 경우
+      else {
+        if (type === 'A') countA++;
+        if (type === 'B') countB++;
+
+        targetKey = type === 'A' ? KEY_A : KEY_B;
+        action = 'up';
+        currentVote = type;
+      }
+
+      // 화면을 딜레이 없이 0초 만에 바로 반영
+      updateUI();
+
+      // 서버 전송 (단일 action 건)
+      if (action && targetKey) {
+        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${targetKey}/${action}`);
+      }
+    }
+
+    // 화면 갱신 함수
+    function updateUI() {
+      document.getElementById('countBadgeA').innerText = '공감 ' + countA + '회';
+      document.getElementById('countBadgeB').innerText = '공감 ' + countB + '회';
+      
+      const total = countA + countB;
+      document.getElementById('totalCount').innerText = total;
+
+      // 요소 선택
+      const cardA = document.getElementById('cardA');
+      const cardB = document.getElementById('cardB');
+      const btnA = document.getElementById('btnA');
+      const btnB = document.getElementById('btnB');
+      const pollSummary = document.getElementById('pollSummary');
+
+      // 총 참여자 안내창 항상 노출
+      pollSummary.style.display = 'block';
+
+      // 카드 & 버튼 초기화
+      cardA.classList.remove('selected-a');
+      cardB.classList.remove('selected-b');
+      btnA.classList.remove('active');
+      btnB.classList.remove('active');
+
+      if (currentVote === 'A') {
+        cardA.classList.add('selected-a');
+        btnA.classList.add('active');
+        btnA.innerHTML = '<div>✅ A 선택됨</div><div class="btn-sub-text">(취소하려면 클릭)</div>';
+        btnB.innerText = '👍 B 선택하기';
+      } else if (currentVote === 'B') {
+        cardB.classList.add('selected-b');
+        btnB.classList.add('active');
+        btnB.innerHTML = '<div>✅ B 선택됨</div><div class="btn-sub-text">(취소하려면 클릭)</div>';
+        btnA.innerText = '👍 A 선택하기';
+      } else {
+        btnA.innerText = '👍 A 선택하기';
+        btnB.innerText = '👍 B 선택하기';
+      }
+    }
+
+    function switchWeek(weekNum) {
+      const messages = {
+        1: "일하려고 만났지, 싸우려고 만났나요? 서로 '뒷목' 잡지 않기 위한 협업 가이드",
+        2: "상처 주는 화풀이는 NO! 서로 피가 되고 살이 되는 SMART 피드백",
+        3: "대화 한 끗 차이로 앙금 제로! 오해를 신뢰로 바꾸는 관계와 대화법",
+        4: "냄새, 소음, 인사, 복장까지! 지킬 건 지키는 센스 만점 오피스 매너"
+      };
+
+      if (weekNum === 1) {
+        document.getElementById('weekLabel').innerText = weekNum + '주차';
+        document.getElementById('mainMessage').innerText = messages[weekNum];
+      } else {
+        alert(weekNum + '주차 컨텐츠는 아직 준비 중입니다.');
+      }
+    }
+ 
+    // 하단 응원하기(좋아요) 및 댓글 롤링 전광판 시스템
+    const KEY_LIKE = "week1_cheer_like";
+    let likeCount = 0;
+    let hasLiked = false;
+
+    // 초기 댓글 목록 데이터
+    let comments = [
+      "좋은 캠페인 만들어주셔서 감사합니다! 힘내세요 💪",
+      "에티켓 가이드 너무 유익하네요! 팀원들과 공유할게요 👍",
+      "제작하신 분 진짜 센스 최고입니다! 응원해요 🎉",
+      "이번 주 콘텐츠 대박! 2주차도 벌써 기대됩니다 ✨"
+    ];
+    let commentIndex = 0;
+
+    async function fetchLikes() {
+      try {
+        const res = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKE}/`);
+        const data = await res.json();
+        likeCount = typeof data.count === 'number' ? data.count : 0;
+        document.getElementById('likeCount').innerText = likeCount;
+      } catch (e) {
+        document.getElementById('likeCount').innerText = 0;
+      }
+    }
+
+    // 좋아요 버튼 클릭 시 (+1 / -1)
+    function toggleLike() {
+      const btn = document.getElementById('likeBtn');
+      const countEl = document.getElementById('likeCount');
+
+      if (!hasLiked) {
+        likeCount++;
+        hasLiked = true;
+        btn.classList.add('active');
+        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKE}/up`);
+      } else {
+        likeCount = Math.max(0, likeCount - 1);
+        hasLiked = false;
+        btn.classList.remove('active');
+        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKE}/down`);
+      }
+      countEl.innerText = likeCount;
+    }
+
+    // 댓글 등록 함수
+    function addComment() {
+      const input = document.getElementById('commentInput');
+      const text = input.value.trim();
+
+      if (!text) {
+        alert('응원 메시지를 입력해 주세요!');
+        return;
+      }
+
+      comments.unshift(`"${text}"`); // 새 댓글을 맨 앞에 추가
+      commentIndex = 0;
+      
+      const tickerText = document.getElementById('tickerText');
+      tickerText.innerText = comments[0];
+      
+      input.value = '';
+      alert('따뜻한 응원이 등록되었습니다! 축하해 주세요 💖');
+    }
+
+    // 댓글 롤링 전환 함수
+    function rotateComments() {
+      if (comments.length === 0) return;
+      const tickerText = document.getElementById('tickerText');
+      tickerText.style.opacity = '0';
+
+      setTimeout(() => {
+        commentIndex = (commentIndex + 1) % comments.length;
+        tickerText.innerText = comments[commentIndex];
+        tickerText.style.opacity = '1';
+      }, 300);
+    }
+  </script>
+</body>
+</html>
