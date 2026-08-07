@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<!-- Firebase SDK 모듈 추가 -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>앱지스 에티켓 연구소</title>
@@ -695,7 +701,7 @@
     </div>
   </section>
 
-  <script>
+<script>
     const NAMESPACE = "abxis_etiquette_lab_2026";
     const KEY_A = "week1_option_a";
     const KEY_B = "week1_option_b";
@@ -704,13 +710,27 @@
     let countB = 0;
     let currentVote = null; // 'A', 'B', 또는 null
 
+    // Firebase 연동 설정
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQN5QIYAwJPSb7QvIRIJiR69Lg8pas6rA",
+      authDomain: "abxis-687f4.firebaseapp.com",
+      databaseURL: "https://abxis-687f4-default-rtdb.firebaseio.com",
+      projectId: "abxis-687f4"
+    };
+
+    // Firebase 초기화
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const commentsRef = db.ref("comments");
+
+    // 초기 데이터 로드 (페이지 열릴 때 실행)
     window.addEventListener('DOMContentLoaded', () => {
       fetchVotes();
       fetchLikes();
-      setInterval(rotateComments, 3500); // 3.5초마다 전광판 댓글 교체
+      listenForComments(); // 실시간 댓글 수신 시작
     });
 
-    // 서버 데이터 가져오기
+    // 1. 투표 수 가져오기
     async function fetchVotes() {
       try {
         const [resA, resB] = await Promise.all([
@@ -731,12 +751,11 @@
       }
     }
 
-    // 투표 클릭 함수 (즉시 UI 변경하는 낙관적 업데이트 기법 적용)
+    // 2. 투표 클릭 함수
     function vote(type) {
       let targetKey = null;
-      let action = null; // 'up' 또는 'down'
+      let action = null;
 
-      // 1. 취소하는 경우 (같은 버튼 다시 누름)
       if (currentVote === type) {
         if (type === 'A') countA = Math.max(0, countA - 1);
         if (type === 'B') countB = Math.max(0, countB - 1);
@@ -745,7 +764,6 @@
         action = 'down';
         currentVote = null;
       } 
-      // 2. 재선택하는 경우 (A -> B 또는 B -> A)
       else if (currentVote !== null) {
         const oldKey = currentVote === 'A' ? KEY_A : KEY_B;
         const newKey = type === 'A' ? KEY_A : KEY_B;
@@ -756,13 +774,11 @@
         if (type === 'A') countA++;
         else countB++;
 
-        // 백그라운드 서버 전송 (기존 거 -1, 새 거 +1)
         fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${oldKey}/down`);
         fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${newKey}/up`);
 
         currentVote = type;
       } 
-      // 3. 신규 투표인 경우
       else {
         if (type === 'A') countA++;
         if (type === 'B') countB++;
@@ -772,16 +788,14 @@
         currentVote = type;
       }
 
-      // 화면을 딜레이 없이 0초 만에 바로 반영
       updateUI();
 
-      // 서버 전송 (단일 action 건)
       if (action && targetKey) {
         fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${targetKey}/${action}`);
       }
     }
 
-    // 화면 갱신 함수
+    // 3. UI 갱신 함수
     function updateUI() {
       document.getElementById('countBadgeA').innerText = '공감 ' + countA + '회';
       document.getElementById('countBadgeB').innerText = '공감 ' + countB + '회';
@@ -789,17 +803,14 @@
       const total = countA + countB;
       document.getElementById('totalCount').innerText = total;
 
-      // 요소 선택
       const cardA = document.getElementById('cardA');
       const cardB = document.getElementById('cardB');
       const btnA = document.getElementById('btnA');
       const btnB = document.getElementById('btnB');
       const pollSummary = document.getElementById('pollSummary');
 
-      // 총 참여자 안내창 항상 노출
       pollSummary.style.display = 'block';
 
-      // 카드 & 버튼 초기화
       cardA.classList.remove('selected-a');
       cardB.classList.remove('selected-b');
       btnA.classList.remove('active');
@@ -836,52 +847,43 @@
         alert(weekNum + '주차 컨텐츠는 아직 준비 중입니다.');
       }
     }
- 
-// 하단 응원하기(좋아요) 및 스크롤 댓글 시스템
-    const KEY_LIKE = "week1_cheer_like";
-    let likeCount = 0;
-    let hasLiked = false;
 
-    // 초기 댓글 데이터 (로컬 저장소에 저장된 댓글이 없으면 사용)
-    const defaultComments = [
-      "이수앱지스 화이팅!! CM, CA도 화이팅!!! 💪",
-      "에티켓 가이드 너무 재밌어요! 팀원들과 공유할게요 👍",
-      "이번 주 콘텐츠 대박! 2주차도 벌써 기대됩니다 ✨"
-    ];
+    // 4. 실시간 댓글 불러오기
+    function listenForComments() {
+      commentsRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        const container = document.getElementById('commentList');
+        container.innerHTML = '';
 
-    let comments = [];
-
-    // 초기 데이터 로드
-    window.addEventListener('DOMContentLoaded', () => {
-      fetchLikes();
-      loadComments();
-    });
-
-    // 로컬 스토리지에서 댓글 가져오기 및 출력
-    function loadComments() {
-      const saved = localStorage.getItem("abxis_comments");
-      if (saved) {
-        comments = JSON.parse(saved);
-      } else {
-        comments = [...defaultComments];
-      }
-      renderComments();
-    }
-
-    // 댓글 목록 화면에 출력하기
-    function renderComments() {
-      const container = document.getElementById('commentList');
-      container.innerHTML = '';
-
-      comments.forEach(text => {
-        const item = document.createElement('div');
-        item.className = 'comment-item';
-        item.innerHTML = `<span class="comment-item-badge">💬</span> <span>${text}</span>`;
-        container.appendChild(item);
+        if (data) {
+          const commentsArray = Object.values(data).reverse();
+          commentsArray.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'comment-item';
+            div.innerHTML = `<span class="comment-item-badge">💬</span> <span>${escapeHtml(item.text)}</span>`;
+            container.appendChild(div);
+          });
+        } else {
+          // DB가 비어있을 때 기본 예시 댓글 3개
+          const defaultComments = [
+            "이수앱지스 화이팅!! CM, CA도 화이팅!!! 💪",
+            "에티켓 가이드 너무 재밌어요! 팀원들과 공유할게요 👍",
+            "이번 주 콘텐츠 대박! 2주차도 벌써 기대됩니다 ✨"
+          ];
+          
+          defaultComments.forEach(text => {
+            const div = document.createElement('div');
+            div.className = 'comment-item';
+            div.innerHTML = `<span class="comment-item-badge">💬</span> <span>${escapeHtml(text)}</span>`;
+            container.appendChild(div);
+          });
+        }
+      }, (error) => {
+        console.error("Firebase 읽기 권한 오류:", error);
       });
     }
 
-    // 새 댓글 등록하기
+    // 5. 새 댓글 DB에 등록하기
     function addComment() {
       const input = document.getElementById('commentInput');
       const text = input.value.trim();
@@ -891,18 +893,24 @@
         return;
       }
 
-      comments.unshift(text); // 최신 댓글을 상단에 추가
-      localStorage.setItem("abxis_comments", JSON.stringify(comments)); // 로컬에 저장
-      
-      renderComments();
-      input.value = '';
-      
-      // 맨 위로 스크롤 이동
-      const container = document.getElementById('commentList');
-      container.scrollTop = 0;
-
-      alert('소중한 한마디가 등록되었습니다! 😊');
+      commentsRef.push({
+        text: text,
+        timestamp: Date.now()
+      }).then(() => {
+        input.value = '';
+        const container = document.getElementById('commentList');
+        container.scrollTop = 0;
+        alert('소중한 한마디가 등록되었습니다! 😊');
+      }).catch((error) => {
+        console.error("댓글 등록 오류:", error);
+        alert('등록 중 오류가 발생했습니다. (Firebase 규칙을 확인해주세요)');
+      });
     }
+
+    // 6. 좋아요(호감도) 관련 함수
+    const KEY_LIKE = "week1_cheer_like";
+    let likeCount = 0;
+    let hasLiked = false;
 
     async function fetchLikes() {
       try {
@@ -931,6 +939,16 @@
         fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKE}/down`);
       }
       countEl.innerText = likeCount;
+    }
+
+    // XSS 방지 함수
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
   </script>
 </body>
