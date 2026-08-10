@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<!-- Firebase SDK 모듈 추가 -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>앱지스 에티켓 연구소</title>
   
+  <!-- Firebase SDK 모듈 (v9+ Compatibility Mode) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
   <style>
     /* 1. 본문용: Pretendard-Regular.woff2 */
     @font-face {
@@ -192,7 +190,7 @@
     .section-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--main-teal-dark); display: flex; align-items: center; gap: 8px; }
     .section-subtext { font-size: 15px; color: var(--text-sub); margin-bottom: 20px; word-break: keep-all; }
 
-    /* 1. 네컷카툰 섹션 (이미지 확대 및 상자 맞춤) */
+    /* 1. 네컷카툰 섹션 */
     .cartoon-box { 
       width: 100%; 
       border-radius: 14px; 
@@ -212,12 +210,12 @@
       object-fit: contain; 
     }
 
-    /* 2. 밸런스 게임 섹션 (모던 트렌디 UI 개편) */
+    /* 2. 밸런스 게임 섹션 */
     .balance-box {
       background: linear-gradient(135deg, #ffffff 0%, #f7fbfb 100%);
       border: 1px solid #e1ecec;
       border-radius: 20px;
-      padding: 24px;
+      padding: 28px 18px;
       box-shadow: 0 10px 25px rgba(13, 138, 138, 0.05);
     }
 
@@ -229,7 +227,7 @@
       color: #1a2e2e;
       line-height: 1.5;
       background: #ffffff;
-      padding: 14px 20px;
+      padding: 14px 16px;
       border-radius: 14px;
       border: 1px solid #e2ecec;
       box-shadow: 0 2px 8px rgba(0,0,0,0.02);
@@ -238,7 +236,7 @@
     .balance-options { 
       display: grid; 
       grid-template-columns: 1fr 1fr; 
-      gap: 16px; 
+      gap: 12px; 
     }
     @media (max-width: 550px) { .balance-options { grid-template-columns: 1fr; } }
 
@@ -246,7 +244,7 @@
       background: #ffffff;
       border: 1.5px solid #e2ecec;
       border-radius: 16px;
-      padding: 20px;
+      padding: 18px 12px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -269,11 +267,24 @@
       box-shadow: 0 8px 20px rgba(13, 138, 138, 0.15); 
     }
 
-    .option-title { font-weight: 800; font-size: 16px; color: var(--point-orange); margin-bottom: 8px; }
-    .option-title.title-b { color: var(--main-teal); }
-    .option-desc { font-size: 14px; color: var(--text-sub); line-height: 1.55; word-break: keep-all; flex: 1; }
+    .option-title { 
+      font-weight: 800; 
+      font-size: 15px; 
+      color: var(--point-orange); 
+      margin-bottom: 14px !important; 
+    }
+    .option-title.title-b { 
+      color: var(--main-teal); 
+    }
 
-    /* 하단 버튼 & 카운트 영역 */
+    .option-desc { 
+      font-size: 13px; 
+      color: var(--text-sub); 
+      line-height: 1.6 !important; 
+      word-break: keep-all; 
+      flex: 1; 
+    }
+
     .vote-action-area { margin-top: 18px; text-align: center; }
     
     .vote-btn {
@@ -313,8 +324,8 @@
     }
 
     .poll-summary {
-      margin-top: 20px;
-      padding-top: 18px;
+      margin-top: 30px;
+      padding-top: 24px;
       border-top: 1px solid #e8f0f0;
       text-align: center;
     }
@@ -329,31 +340,22 @@
       margin-bottom: 12px;
     }
     .result-msg { 
-      font-size: 15px; 
+      font-size: 14px; 
       font-weight: 600; 
       color: #334444; 
       line-height: 1.55; 
       background: #ffffff; 
-      padding: 14px 18px; 
+      padding: 14px 16px; 
       border-radius: 12px; 
       border: 1px solid #e2ecec;
       box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
 
-    /* 3. 속마음 팩폭 번역기 폰트 사이즈 일괄 확대 */
-    .bad-tag { 
-      font-size: 13px !important; 
-    } 
-    .flip-front p { 
-      font-size: 15px !important; 
-      line-height: 1.4;
-    }
-    .flip-back p:first-child { 
-      font-size: 13px !important; 
-    }
-    .flip-back p:last-child { 
-      font-size: 14px !important; 
-    }
+    /* 3. 속마음 팩폭 번역기 */
+    .bad-tag { font-size: 13px !important; } 
+    .flip-front p { font-size: 15px !important; line-height: 1.4; }
+    .flip-back p:first-child { font-size: 13px !important; }
+    .flip-back p:last-child { font-size: 13px !important; }
 
     .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; }
     @media (max-width: 550px) { .flip-grid { grid-template-columns: 1fr; } }
@@ -376,7 +378,7 @@
     .hero-back { transform: rotateY(180deg); background: #f0f9f8; }
     .hero-img { width: 100%; height: 100%; object-fit: contain; flex: 1; }
 
-  /* 최하단 캠페인 응원 가로 섹션 */
+    /* 최하단 캠페인 응원 가로 섹션 */
     .cheer-section {
       max-width: 1100px;
       margin: 32px auto 0;
@@ -454,30 +456,21 @@
     }
     .comment-submit-btn:hover { background: #e66520; }
 
-    /* 댓글 3개 높이 고정 스크롤 박스 */
     .comment-scroll-box {
       background: #ffffff;
       border: 1px solid #d2ecec;
       border-radius: 12px;
       padding: 10px 14px;
-      max-height: 130px; /* 딱 댓글 3개 들어가는 고정 높이 */
-      overflow-y: auto; /* 스크롤바 생성 */
+      max-height: 130px;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
-    /* 커스텀 스크롤바 디자인 */
-    .comment-scroll-box::-webkit-scrollbar {
-      width: 6px;
-    }
-    .comment-scroll-box::-webkit-scrollbar-thumb {
-      background: #0d8a8a;
-      border-radius: 10px;
-    }
-    .comment-scroll-box::-webkit-scrollbar-track {
-      background: #eef7f7;
-    }
+    .comment-scroll-box::-webkit-scrollbar { width: 6px; }
+    .comment-scroll-box::-webkit-scrollbar-thumb { background: #0d8a8a; border-radius: 10px; }
+    .comment-scroll-box::-webkit-scrollbar-track { background: #eef7f7; }
 
     .comment-item {
       font-size: 13px;
@@ -502,19 +495,67 @@
       border-radius: 4px;
       white-space: nowrap;
     }
+
+    /* 카툰 플립 카드 전용 스타일 */
+    .cartoon-flip-card {
+      perspective: 1000px;
+      width: 100%;
+      min-height: 600px;
+      cursor: pointer;
+    }
+    .cartoon-flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .cartoon-flip-card.flipped .cartoon-flip-inner {
+      transform: rotateY(180deg);
+    }
+    .cartoon-front, .cartoon-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #fafafa;
+      padding: 12px;
+    }
+    .cartoon-back {
+      transform: rotateY(180deg);
+      background: #f4fafb;
+    }
+    .cartoon-flip-badge {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--main-teal-dark);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cartoon-flip-hint {
+      font-size: 12px;
+      color: var(--point-orange);
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
 
   <header>
     <div class="header-container">
-      <!-- 상단 정보 뱃지 바 -->
       <div class="header-top-bar">
         <div class="header-badge">🧪 CA 조직문화 개선과제 #4 공감과 존중을 위한 에티켓 강화</div>
         <div class="source-chip">모든 콘텐츠는 숨숨집🐱에 접수된 실제 사례를 기반으로 제작되었습니다.</div>
       </div>
       
-      <!-- 메인 통이미지 배너 -->
       <div class="header-banner-box">
         <img src="header_banner.png" alt="앱지스 에티켓 연구소 메인 배너" class="header-banner-img">
       </div>
@@ -529,7 +570,6 @@
       <div class="week-tab disabled" onclick="alert('4주차 준비 중입니다!')">4주차: 오피스 빌런 퇴치법</div>
     </nav>
 
-    <!-- 전광판 태그 영역 -->
     <div class="week-message-card">
       <span class="week-message-label" id="weekLabel">1주차</span>
       <div class="ticker-wrap">
@@ -540,12 +580,33 @@
 
   <main class="container">
 
-    <!-- 1. 사례 카툰 -->
+    <!-- 1. 사례 카툰 섹션 -->
     <section class="section-card">
       <div class="section-title">🖼️ 이번 주 사례 카툰</div>
       <p class="section-subtext">나 혹은 내 동료의 이야기일지도 몰라요. 카툰을 보며 함께 공감해 보세요!</p>
-      <div class="cartoon-box">
-        <img src="cartoon_week1.png" alt="1주차 네컷카툰" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Week+1+Co-working+Cartoon';">
+      
+      <div class="cartoon-flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="cartoon-flip-inner">
+          <div class="cartoon-front">
+            <div class="cartoon-flip-badge">
+              <span>Case 1. 맥락과 기한 없는 일방적 업무 요청 🚀</span>
+              <span class="cartoon-flip-hint">클릭해서 Case 2 보기 🔄</span>
+            </div>
+            <div class="cartoon-box">
+              <img src="cartoon_week1.png" alt="1주차 네컷카툰 1" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Case+1+Cartoon';">
+            </div>
+          </div>
+
+          <div class="cartoon-back">
+            <div class="cartoon-flip-badge">
+              <span>Case 2. 내 생각만 무조건 고집하는 편협한 태도 😤</span>
+              <span class="cartoon-flip-hint">클릭해서 Case 1 보기 🔄</span>
+            </div>
+            <div class="cartoon-box">
+              <img src="cartoon_week1_2.png" alt="1주차 네컷카툰 2" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Case+2+Cartoon';">
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -555,13 +616,17 @@
       <p class="section-subtext">밸런스 게임으로 알아보는 앱지스 피플의 성향! 당신의 선택은?</p>
       
       <div class="balance-box">
-        <div class="balance-q">기분 좋게 출근한 당신 🧑🏻‍💼<br>함께 일할 때 뒷목 잡게 만드는 매운맛 동료는 🌶️?</div>
+        <div class="balance-q">가뜩이나 불쾌지수 높은 여름 💦<br>당신을 더 열받게 하는 매운맛 동료는 🌶️?</div>
         
         <div class="balance-options">
-          <!-- A 옵션 카드 -->
           <div class="option-card" id="cardA">
-            <div class="option-title">A. "일단 해주세요" <br>🚀 냅다 투척형</div>
-            <div class="option-desc">배경, 목적, 기한 생략! <br>메일로 파일 달랑 던져놓고 <br>"확인 후 처리 부탁요"<br>당황스러운 순간<br>(추리력 시험중이세요? 🕵️‍♂️)</div>
+            <div class="option-title">A. "다 됩니다!"<br>🎈 호언장담 펑크형</div>
+            <div class="option-desc">
+              일정 검토 없이 "가능합니다!"<br>
+              냅다 호언장담하더니 마감날<br>
+              결국 펑크내고 잠수타는 동료<br>
+              <span style="font-size: 12px; color: #888; display: block; margin-top: 4px;">(차라리 솔직히 말해줘.. 😭)</span>
+            </div>
             
             <div class="vote-action-area">
               <button class="vote-btn btn-a" id="btnA" onclick="vote('A')">👍 A 선택하기</button>
@@ -569,10 +634,14 @@
             </div>
           </div>
 
-          <!-- B 옵션 카드 -->
           <div class="option-card" id="cardB">
-            <div class="option-title title-b">B. "제가 그걸 왜요?"<br>🛡️ 자동 반사형</div>
-            <div class="option-desc">정성스럽게 설명하며 요청했더니, 대안도 없이<br> "제 업무 아닌데요?"<br>한마디로 모른 척<br>(차갑다...차가워.... 🧊)</div>
+            <div class="option-title title-b">B. "제가 그걸 왜요?"<br>🛡️ 자동 반사 거절형</div>
+            <div class="option-desc">
+              "그게 제 성과에 반영되나요..?"<br>
+              딱 내 성과 아니면 1초 만에<br>
+              차갑게 선 긋고 거절하는 동료<br>
+              <span style="font-size: 12px; color: #888; display: block; margin-top: 4px;">(우리가 남이가, 원팀이라며... 👥)</span>
+            </div>
             
             <div class="vote-action-area">
               <button class="vote-btn btn-b" id="btnB" onclick="vote('B')">👍 B 선택하기</button>
@@ -581,11 +650,11 @@
           </div>
         </div>
 
-        <!-- 하단 총 투표수 및 안내 메시지 -->
         <div class="poll-summary" id="pollSummary" style="display: none;">
           <div class="total-count-text">🔥 현재 총 <span id="totalCount">0</span>명이 공감 투표에 참여했습니다!</div>
           <div class="result-msg">
-            💡요청할 땐 핵심 맥락과 기한을, <br> 거절할 땐 따뜻한 대안을 함께 전달해 보는 건 어떨까요?
+            💡 대책 없는 OK도, 무조건적인 NO도 이젠 그만.<br>
+            현실적인 수락과 오픈 마인드로 진짜 협업을 완성해 보세요!
           </div>
         </div>
       </div>
@@ -600,12 +669,12 @@
         <div class="flip-card" onclick="this.classList.toggle('flipped')">
           <div class="flip-inner">
             <div class="flip-front">
-              <span class="bad-tag">Bad Request (요청자)</span>
-              <p style="font-weight:bold; font-size:13px;">"OO님, 이거 지금 바로<br>확인 가능한가요? 급합니다!" 😫</p>
+              <span class="bad-tag">Bad Reply (메시지 수신)</span>
+              <p style="font-weight:bold; font-size:13px; word-break:keep-all;">(메시지 읽고 답장 없이<br>2시간째 무응답...)<br>😶‍🌫️</p>
             </div>
             <div class="flip-back">
-              <p style="font-size:11px; color:#ffb3b3;">🫥속마음: "얼마나 급한 건지,<br>뭘 봐달라는 건지 정보가 1도 없네."</p>
-              <p style="font-size:12px; font-weight:bold; margin-top:6px;">💡 Do: "OO님, A 프로젝트 건<br>관련해 오늘 15시까지 3번 항목<br>확인 가능하실까요?"</p>
+              <p style="font-size:11px; color:#ffb3b3; word-break:keep-all;">🫥속마음: "읽었으면 읽었다,<br>나중에 본다 말이라도 해줘요ㅠ"</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: "메시지 확인했습니다!<br>지금 회의 중이라 16시 이후에<br>확인 후 말씀드리겠습니다."<br>최소한의 답장은 해주는 센스!</p>
             </div>
           </div>
         </div>
@@ -613,12 +682,12 @@
         <div class="flip-card" onclick="this.classList.toggle('flipped')">
           <div class="flip-inner">
             <div class="flip-front">
-              <span class="bad-tag">Bad Reply (피요청자)</span>
-              <p style="font-weight:bold; font-size:13px;">(메시지 읽고<br>2시간째 답장 없음...)<br>😶‍🌫️</p>
+              <span class="bad-tag">Bad Attendance (일정 확인)</span>
+              <p style="font-weight:bold; font-size:12px; word-break:keep-all; line-height:1.35;">(사전에 공유된 회의 5분 전)<br>"엥? 무슨 회의요?<br>어디서 하나요?"<br>😵‍💫</p>
             </div>
             <div class="flip-back">
-              <p style="font-size:11px; color:#ffb3b3;">🫥속마음: "읽었으면 읽었다,<br>나중에 본다 말이라도 해줘요ㅠ"</p>
-              <p style="font-size:12px; font-weight:bold; margin-top:6px;">💡 Do: "지금 회의 중이라<br>16시 이후에 말씀드리겠습니다!"</p>
+              <p style="font-size:11px; color:#ffb3b3; word-break:keep-all;">🫥속마음: "일주일 전부터<br>캘린더 초대에 회의실, 안건까지<br>다 적어뒀는데요..."</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: 미리 공유된 캘린더 일정과<br>안건을 미리 체크하고 참석하는<br>센스를 보여주세요!</p>
             </div>
           </div>
         </div>
@@ -626,12 +695,12 @@
         <div class="flip-card" onclick="this.classList.toggle('flipped')">
           <div class="flip-inner">
             <div class="flip-front">
-              <span class="bad-tag">Bad Request (요청자)</span>
-              <p style="font-weight:bold; font-size:13px;">"지난번에 말씀드린 그거,<br>알아서 잘 정리해서 주세요."<br>🌀</p>
+              <span class="bad-tag">Bad Meeting (회의 준비)</span>
+              <p style="font-weight:bold; font-size:12px; word-break:keep-all; line-height:1.35;">"사전 공유 자료요?<br>바빠서 아직 못 봤는데 뭐죠?"<br>🤫</p>
             </div>
             <div class="flip-back">
-              <p style="font-size:11px; color:#ffb3b3;">🫥속마음: "기준도 없고 목적도<br>없는데 어떻게 '알아서' 하나요?"</p>
-              <p style="font-size:12px; font-weight:bold; margin-top:6px;">💡 Do: "임원 보고용이라<br>최근 3개월 수치만 표로<br>정리 부탁드립니다!"</p>
+              <p style="font-size:11px; color:#ffb3b3; word-break:keep-all;">🫥속마음: "자료 설명하느라<br>논의 시간이 부족해지잖아요..."</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: 회의 전 핵심 자료를 5분만<br>미리 정독하고 들어오시면<br>훨씬 밀도 높은 논의가 됩니다!</p>
             </div>
           </div>
         </div>
@@ -639,12 +708,12 @@
         <div class="flip-card" onclick="this.classList.toggle('flipped')">
           <div class="flip-inner">
             <div class="flip-front">
-              <span class="bad-tag">Bad Reply (피요청자)</span>
-              <p style="font-weight:bold; font-size:13px;">"그건 제 업무가 아니라서<br>못 해드립니다"<br>🙅‍♂️</p>
+              <span class="bad-tag">Bad Request (절차 무시)</span>
+              <p style="font-weight:bold; font-size:12px; word-break:keep-all; line-height:1.35;">"결재/절차는 나중에 하고~<br>이번만 그냥 처리해 주세요~"<br>🥺</p>
             </div>
             <div class="flip-back">
-              <p style="font-size:11px; color:#ffb3b3;">🫥속마음: "단칼에 안 된다고만<br>하지 말고 대안이라도 알려줘요..."</p>
-              <p style="font-size:12px; font-weight:bold; margin-top:6px;">💡 Do: "해당 건은 B팀 담당이라<br>B팀 OO님께 문의하시면<br>안내받으실 수 있습니다!"</p>
+              <p style="font-size:11px; color:#ffb3b3; word-break:keep-all;">🫥속마음: "원칙을 깨고 진행했다가<br>문제가 생기면 책임은 누구 몫이죠?"</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: 정해진 규정과 승인 절차를<br>선행한 뒤 요청해 주시는 것이<br>서로 안전한 협업의 시작입니다!</p>
             </div>
           </div>
         </div>
@@ -672,11 +741,11 @@
 
   </main>
 
-  <!-- 최하단 캠페인 응원 & 좋아요 가로 섹션 -->
+  <!-- 최하단 캠페인 응원 & 호감도 조사 섹션 -->
   <section class="cheer-section">
     <div class="cheer-container">
       
-      <!-- 좋아요 & 응원 버튼 -->
+      <!-- 좋아요(호감도) 버튼 -->
       <div class="like-box">
         <button class="like-btn" id="likeBtn" onclick="toggleLike()">
           <span class="like-icon">💖</span>
@@ -685,32 +754,23 @@
         </button>
       </div>
 
-      <!-- 한 줄 응원 한마디 등록 & 3개 고정 스크롤 리스트 -->
+      <!-- 한 줄 응원 한마디 등록 영역 -->
       <div class="comment-box">
         <div class="comment-input-wrap">
           <input type="text" id="commentInput" placeholder="이번주 컨텐츠가 마음에 드시면 따뜻한 한마디를 남겨주세요! (최대 30자)" maxlength="30" onkeypress="if(event.keyCode==13) addComment()">
           <button class="comment-submit-btn" onclick="addComment()">등록</button>
         </div>
 
-        <!-- 스크롤 가능한 전체 댓글 리스트 영역 -->
         <div class="comment-scroll-box" id="commentList">
-          <!-- 스크립트에서 댓글 항목이 여기에 생성됩니다 -->
+          <!-- 실시간 댓글 리스트 -->
         </div>
       </div>
 
     </div>
   </section>
 
-<script>
-    const NAMESPACE = "abxis_etiquette_lab_2026";
-    const KEY_A = "week1_option_a";
-    const KEY_B = "week1_option_b";
-
-    let countA = 0;
-    let countB = 0;
-    let currentVote = null; // 'A', 'B', 또는 null
-
-    // Firebase 연동 설정
+  <script>
+    // 1. Firebase 연동 설정
     const firebaseConfig = {
       apiKey: "AIzaSyCQN5QIYAwJPSb7QvIRIJiR69Lg8pas6rA",
       authDomain: "abxis-687f4.firebaseapp.com",
@@ -718,85 +778,73 @@
       projectId: "abxis-687f4"
     };
 
-    // Firebase 초기화
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.database();
+
+    // Firebase DB 참조 지정
+    const votesRef = db.ref("votes");
+    const likesRef = db.ref("likes");
     const commentsRef = db.ref("comments");
 
-    // 초기 데이터 로드 (페이지 열릴 때 실행)
+    let countA = 0;
+    let countB = 0;
+    let currentVote = null;
+    let likeCount = 0;
+    let hasLiked = false;
+
+    // 페이지 초기 로드
     window.addEventListener('DOMContentLoaded', () => {
-      fetchVotes();
-      fetchLikes();
-      listenForComments(); // 실시간 댓글 수신 시작
+      listenForVotes();
+      listenForLikes();
+      listenForComments();
     });
 
-    // 1. 투표 수 가져오기
-    async function fetchVotes() {
-      try {
-        const [resA, resB] = await Promise.all([
-          fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_A}/`),
-          fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_B}/`)
-        ]);
-        
-        const dataA = await resA.json();
-        const dataB = await resB.json();
-
-        countA = typeof dataA.count === 'number' ? dataA.count : 0;
-        countB = typeof dataB.count === 'number' ? dataB.count : 0;
-
-        updateUI();
-      } catch (error) {
-        console.log("초기 로딩 오류 (기본값 설정)", error);
-        updateUI();
-      }
+    // ==========================================
+    // 2. 에티켓 밸런스 게임 투표 (Firebase 실시간 연동)
+    // ==========================================
+    function listenForVotes() {
+      votesRef.on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        countA = typeof data.optionA === 'number' ? data.optionA : 0;
+        countB = typeof data.optionB === 'number' ? data.optionB : 0;
+        updateVoteUI();
+      }, (error) => {
+        console.error("Firebase 투표 로드 오류:", error);
+      });
     }
 
-    // 2. 투표 클릭 함수
     function vote(type) {
-      let targetKey = null;
-      let action = null;
-
       if (currentVote === type) {
         if (type === 'A') countA = Math.max(0, countA - 1);
         if (type === 'B') countB = Math.max(0, countB - 1);
-        
-        targetKey = type === 'A' ? KEY_A : KEY_B;
-        action = 'down';
         currentVote = null;
-      } 
-      else if (currentVote !== null) {
-        const oldKey = currentVote === 'A' ? KEY_A : KEY_B;
-        const newKey = type === 'A' ? KEY_A : KEY_B;
-        
+      } else if (currentVote !== null) {
         if (currentVote === 'A') countA = Math.max(0, countA - 1);
         else countB = Math.max(0, countB - 1);
 
         if (type === 'A') countA++;
         else countB++;
 
-        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${oldKey}/down`);
-        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${newKey}/up`);
-
         currentVote = type;
-      } 
-      else {
+      } else {
         if (type === 'A') countA++;
         if (type === 'B') countB++;
-
-        targetKey = type === 'A' ? KEY_A : KEY_B;
-        action = 'up';
         currentVote = type;
       }
 
-      updateUI();
+      updateVoteUI();
 
-      if (action && targetKey) {
-        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${targetKey}/${action}`);
-      }
+      votesRef.set({
+        optionA: countA,
+        optionB: countB
+      }).catch((error) => {
+        console.error("투표 데이터 저장 오류:", error);
+      });
     }
 
-    // 3. UI 갱신 함수
-    function updateUI() {
+    function updateVoteUI() {
       document.getElementById('countBadgeA').innerText = '공감 ' + countA + '회';
       document.getElementById('countBadgeB').innerText = '공감 ' + countB + '회';
       
@@ -809,7 +857,9 @@
       const btnB = document.getElementById('btnB');
       const pollSummary = document.getElementById('pollSummary');
 
-      pollSummary.style.display = 'block';
+      if (currentVote !== null || total > 0) {
+        pollSummary.style.display = 'block';
+      }
 
       cardA.classList.remove('selected-a');
       cardB.classList.remove('selected-b');
@@ -832,26 +882,35 @@
       }
     }
 
-    function switchWeek(weekNum) {
-      const messages = {
-        1: "일하려고 만났지, 싸우려고 만났나요? 서로 '뒷목' 잡지 않기 위한 협업 가이드",
-        2: "상처 주는 화풀이는 NO! 서로 피가 되고 살이 되는 SMART 피드백",
-        3: "대화 한 끗 차이로 앙금 제로! 오해를 신뢰로 바꾸는 관계와 대화법",
-        4: "냄새, 소음, 인사, 복장까지! 지킬 건 지키는 센스 만점 오피스 매너"
-      };
+    // ==========================================
+    // 3. 최하단 컨텐츠 호감도 조사 (Firebase 전환 연동)
+    // ==========================================
+    function listenForLikes() {
+      likesRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        likeCount = typeof data === 'number' ? data : 0;
+        document.getElementById('likeCount').innerText = likeCount;
+      });
+    }
 
-      if (weekNum === 1) {
-        document.getElementById('weekLabel').innerText = weekNum + '주차';
-        document.getElementById('mainMessage').innerText = messages[weekNum];
+    function toggleLike() {
+      const btn = document.getElementById('likeBtn');
+
+      if (!hasLiked) {
+        hasLiked = true;
+        btn.classList.add('active');
+        likesRef.transaction((current) => (current || 0) + 1);
       } else {
-        alert(weekNum + '주차 컨텐츠는 아직 준비 중입니다.');
+        hasLiked = false;
+        btn.classList.remove('active');
+        likesRef.transaction((current) => Math.max(0, (current || 0) - 1));
       }
     }
 
-
-// 4. 실시간 댓글 불러오기 (예시 댓글 상시 유지 버전)
+    // ==========================================
+    // 4. 실시간 댓글 응원 기능
+    // ==========================================
     function listenForComments() {
-      // 기본 예시 댓글 3개
       const defaultComments = [
         "이수앱지스 화이팅!! CM, CA도 화이팅!!! 💪",
         "에티켓 가이드 너무 재밌어요! 팀원들과 공유할게요 👍",
@@ -863,7 +922,6 @@
         const container = document.getElementById('commentList');
         container.innerHTML = '';
 
-        // 1) 사용자가 새로 입력한 DB 댓글들을 최신순으로 위에 배치
         if (data) {
           const userCommentsArray = Object.values(data).reverse();
           userCommentsArray.forEach(item => {
@@ -874,21 +932,17 @@
           });
         }
 
-        // 2) 기본 예시 댓글 3개를 항상 아래에 함께 표시
         defaultComments.forEach(text => {
           const div = document.createElement('div');
           div.className = 'comment-item';
           div.innerHTML = `<span class="comment-item-badge">💬</span> <span>${escapeHtml(text)}</span>`;
           container.appendChild(div);
         });
-
       }, (error) => {
-        console.error("Firebase 읽기 권한 오류:", error);
+        console.error("Firebase 댓글 읽기 오류:", error);
       });
     }
 
-
-    // 5. 새 댓글 DB에 등록하기
     function addComment() {
       const input = document.getElementById('commentInput');
       const text = input.value.trim();
@@ -908,42 +962,25 @@
         alert('소중한 한마디가 등록되었습니다! 😊');
       }).catch((error) => {
         console.error("댓글 등록 오류:", error);
-        alert('등록 중 오류가 발생했습니다. (Firebase 규칙을 확인해주세요)');
+        alert('등록 중 오류가 발생했습니다.');
       });
     }
 
-    // 6. 좋아요(호감도) 관련 함수
-    const KEY_LIKE = "week1_cheer_like";
-    let likeCount = 0;
-    let hasLiked = false;
+    // 주차 이동 탭
+    function switchWeek(weekNum) {
+      const messages = {
+        1: "일하려고 만났지, 싸우려고 만났나요? 서로 '뒷목' 잡지 않기 위한 협업 가이드",
+        2: "상처 주는 화풀이는 NO! 서로 피가 되고 살이 되는 SMART 피드백",
+        3: "대화 한 끗 차이로 앙금 제로! 오해를 신뢰로 바꾸는 관계와 대화법",
+        4: "냄새, 소음, 인사, 복장까지! 지킬 건 지키는 센스 만점 오피스 매너"
+      };
 
-    async function fetchLikes() {
-      try {
-        const res = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKE}/`);
-        const data = await res.json();
-        likeCount = typeof data.count === 'number' ? data.count : 0;
-        document.getElementById('likeCount').innerText = likeCount;
-      } catch (e) {
-        document.getElementById('likeCount').innerText = 0;
-      }
-    }
-
-    function toggleLike() {
-      const btn = document.getElementById('likeBtn');
-      const countEl = document.getElementById('likeCount');
-
-      if (!hasLiked) {
-        likeCount++;
-        hasLiked = true;
-        btn.classList.add('active');
-        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKE}/up`);
+      if (weekNum === 1) {
+        document.getElementById('weekLabel').innerText = weekNum + '주차';
+        document.getElementById('mainMessage').innerText = messages[weekNum];
       } else {
-        likeCount = Math.max(0, likeCount - 1);
-        hasLiked = false;
-        btn.classList.remove('active');
-        fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/${KEY_LIKE}/down`);
+        alert(weekNum + '주차 컨텐츠는 아직 준비 중입니다.');
       }
-      countEl.innerText = likeCount;
     }
 
     // XSS 방지 함수
