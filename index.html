@@ -5,12 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>앱지스 에티켓 연구소</title>
   
-  <!-- Firebase SDK 모듈 (v9+ Compatibility Mode) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
   <style>
-    /* 1. 본문용: Pretendard-Regular.woff2 */
     @font-face {
       font-family: 'Pretendard-Custom';
       src: url('./Pretendard-Regular.woff2') format('woff2');
@@ -18,7 +16,6 @@
       font-style: normal;
     }
 
-    /* 2. 메인 타이틀용: SBAggroB.ttf */
     @font-face {
       font-family: 'SBAggroB';
       src: url('./SBAggroB.ttf') format('truetype');
@@ -26,7 +23,6 @@
       font-style: normal;
     }
     
-    /* 3. 메인 메시지용: Mona12.woff2 */
     @font-face {
       font-family: 'Mona12';
       src: url('./Mona12.woff2') format('woff2');
@@ -97,7 +93,6 @@
       border-radius: 20px;
     }
 
-    /* 메인 비주얼 이미지 배너 */
     .header-banner-box {
       width: 100%;
       border-radius: 20px;
@@ -114,7 +109,7 @@
       object-fit: cover;
     }
 
-    /* 네비게이션 & 메시지 영역 컨테이너 */
+    /* 네비게이션 & 전광판 영역 */
     .nav-container {
       max-width: 1100px;
       margin: 25px auto 0;
@@ -122,11 +117,11 @@
     }
 
     .week-nav { display: flex; justify-content: center; gap: 12px; margin-bottom: 16px; }
-    .week-tab { flex: 1; background: white; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.25s ease; font-weight: 600; font-size: 18px; }
+    .week-tab { flex: 1; background: white; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.25s ease; font-weight: 600; font-size: 18px; color: #557777; }
+    .week-tab:hover { background: #f0f8f8; }
     .week-tab.active { border-color: var(--main-teal); background: #eaf6f6; color: var(--main-teal-dark); font-weight: 700; box-shadow: 0 4px 10px rgba(13, 138, 138, 0.1); }
-    .week-tab.disabled { opacity: 0.55; cursor: not-allowed; background: #f5f5f5; }
+    .week-tab.disabled { opacity: 0.55; cursor: not-allowed; background: #f5f5f5; color: #888; }
 
-    /* 전광판 배너 카드 */
     .week-message-card {
       background: #ffffff;
       border: 1.5px solid #d2e7e7;
@@ -163,7 +158,7 @@
       display: inline-block;
       white-space: nowrap;
       padding-left: 100%;
-      animation: marquee 18s linear infinite;
+      animation: marquee 20s linear infinite;
       font-family: 'Mona12', 'Pretendard-Custom', sans-serif !important;
       font-size: 18px;
       color: #0d5c63;
@@ -190,7 +185,7 @@
     .section-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--main-teal-dark); display: flex; align-items: center; gap: 8px; }
     .section-subtext { font-size: 15px; color: var(--text-sub); margin-bottom: 20px; word-break: keep-all; }
 
-     /* 1. 네컷카툰 섹션 (반응형 비율 최적화) */
+    /* 1. 카툰 섹션 */
     .cartoon-box { 
       width: 100%; 
       border-radius: 14px; 
@@ -208,108 +203,49 @@
     .cartoon-img { 
       width: 100%; 
       height: auto; 
-      max-height: none; 
       object-fit: contain; 
       display: block;
     }
 
-    /* 2. 밸런스 게임 섹션 */
+    .cartoon-flip-card { perspective: 1000px; width: 100%; height: auto; cursor: pointer; }
+    .cartoon-flip-inner { position: relative; width: 100%; height: auto; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+    .cartoon-flip-card.flipped .cartoon-flip-inner { transform: rotateY(180deg); }
+    .cartoon-front, .cartoon-back { width: 100%; height: auto; backface-visibility: hidden; border-radius: 14px; border: 1px solid var(--border-color); overflow: hidden; display: flex; flex-direction: column; background: #fafafa; padding: 12px; }
+    .cartoon-front { position: relative; }
+    .cartoon-back { position: absolute; top: 0; left: 0; height: 100%; transform: rotateY(180deg); background: #f4fafb; }
+    .cartoon-flip-badge { font-size: 14px; font-weight: 800; color: var(--main-teal-dark); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .cartoon-flip-hint { font-size: 12px; color: var(--point-orange); font-weight: 700; }
+
+    /* 2. 밸런스 게임 공통 */
     .balance-box {
       background: linear-gradient(135deg, #ffffff 0%, #f7fbfb 100%);
       border: 1px solid #e1ecec;
       border-radius: 20px;
-      padding: 28px 18px;
+      padding: 24px 18px;
       box-shadow: 0 10px 25px rgba(13, 138, 138, 0.05);
     }
 
-    .balance-q {
-      font-weight: 800;
-      font-size: 16px;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #1a2e2e;
-      line-height: 1.5;
-      background: #ffffff;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid #e2ecec;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
+    .balance-subtabs { display: flex; gap: 10px; margin-bottom: 18px; }
+    .subtab-btn { flex: 1; padding: 10px 12px; border-radius: 12px; border: 1.5px solid #d2e7e7; background: #ffffff; font-size: 14px; font-weight: 700; color: #557777; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+    .subtab-btn:hover { background: #f0f8f8; }
+    .subtab-btn.active { background: var(--main-teal); color: #ffffff; border-color: var(--main-teal); box-shadow: 0 4px 10px rgba(13, 138, 138, 0.2); }
 
-    .balance-options { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 12px; 
-    }
+    .balance-q { font-weight: 800; font-size: 15px; margin-bottom: 16px; text-align: center; color: #1a2e2e; line-height: 1.5; background: #ffffff; padding: 12px 14px; border-radius: 14px; border: 1px solid #e2ecec; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+    .balance-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     @media (max-width: 550px) { .balance-options { grid-template-columns: 1fr; } }
 
-    .option-card {
-      background: #ffffff;
-      border: 1.5px solid #e2ecec;
-      border-radius: 16px;
-      padding: 18px 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-    }
-    .option-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-    }
+    .option-card { background: #ffffff; border: 1.5px solid #e2ecec; border-radius: 16px; padding: 16px 12px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+    .option-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06); }
+    .option-card.selected-a { border-color: var(--point-orange); background: #fffcf9; box-shadow: 0 8px 20px rgba(255, 126, 54, 0.15); }
+    .option-card.selected-b { border-color: var(--main-teal); background: #f4fafb; box-shadow: 0 8px 20px rgba(13, 138, 138, 0.15); }
 
-    .option-card.selected-a { 
-      border-color: var(--point-orange); 
-      background: #fffcf9; 
-      box-shadow: 0 8px 20px rgba(255, 126, 54, 0.15); 
-    }
-    .option-card.selected-b { 
-      border-color: var(--main-teal); 
-      background: #f4fafb; 
-      box-shadow: 0 8px 20px rgba(13, 138, 138, 0.15); 
-    }
-
-    .option-title { 
-      font-weight: 800; 
-      font-size: 15px; 
-      color: var(--point-orange); 
-      margin-bottom: 14px !important; 
-    }
-    .option-title.title-b { 
-      color: var(--main-teal); 
-    }
-
-    .option-desc { 
-      font-size: 13px; 
-      color: var(--text-sub); 
-      line-height: 1.6 !important; 
-      word-break: keep-all; 
-      flex: 1; 
-    }
-
-    .vote-action-area { margin-top: 18px; text-align: center; }
+    .option-title { font-weight: 800; font-size: 14px; color: var(--point-orange); margin-bottom: 10px !important; }
+    .option-title.title-b { color: var(--main-teal); }
+    .option-desc { font-size: 12.5px; color: var(--text-sub); line-height: 1.55 !important; word-break: keep-all; flex: 1; }
+    .vote-action-area { margin-top: 14px; text-align: center; }
     
-    .vote-btn {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: none;
-      display: block;
-      text-align: center;
-      line-height: 1.4;
-    }
-    
-    .btn-sub-text {
-      font-size: 11px;
-      font-weight: 400;
-      opacity: 0.9;
-      margin-top: 2px;
-    }
+    .vote-btn { width: 100%; padding: 9px 10px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s ease; border: none; display: block; text-align: center; line-height: 1.4; }
+    .btn-sub-text { font-size: 11px; font-weight: 400; opacity: 0.9; margin-top: 2px; }
 
     .btn-a { background: #fff0e6; color: #e65c00; }
     .btn-a:hover { background: var(--point-orange); color: white; }
@@ -319,60 +255,23 @@
     .btn-b:hover { background: var(--main-teal); color: white; }
     .btn-b.active { background: linear-gradient(135deg, #0d8a8a, #086666); color: white; box-shadow: 0 4px 12px rgba(13, 138, 138, 0.35); }
 
-    .vote-count-text {
-      margin-top: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #889999;
-    }
+    .vote-count-text { margin-top: 6px; font-size: 12px; font-weight: 700; color: #889999; }
+    .poll-summary { margin-top: 22px; padding-top: 18px; border-top: 1px solid #e8f0f0; text-align: center; }
+    .total-count-text { display: inline-block; font-size: 13px; font-weight: 800; color: var(--main-teal-dark); background: #e8f4f4; padding: 5px 14px; border-radius: 20px; margin-bottom: 10px; }
+    .result-msg { font-size: 13px; font-weight: 600; color: #334444; line-height: 1.5; background: #ffffff; padding: 12px 14px; border-radius: 12px; border: 1px solid #e2ecec; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
 
-    .poll-summary {
-      margin-top: 30px;
-      padding-top: 24px;
-      border-top: 1px solid #e8f0f0;
-      text-align: center;
-    }
-    .total-count-text {
-      display: inline-block;
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--main-teal-dark);
-      background: #e8f4f4;
-      padding: 6px 16px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-    }
-    .result-msg { 
-      font-size: 14px; 
-      font-weight: 600; 
-      color: #334444; 
-      line-height: 1.55; 
-      background: #ffffff; 
-      padding: 14px 16px; 
-      border-radius: 12px; 
-      border: 1px solid #e2ecec;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    }
-
-    /* 3. 속마음 팩폭 번역기 */
-    .bad-tag { font-size: 13px !important; } 
-    .flip-front p { font-size: 15px !important; line-height: 1.4; }
-    .flip-back p:first-child { font-size: 13px !important; }
-    .flip-back p:last-child { font-size: 13px !important; }
-
+    /* 3. 번역기 */
+    .bad-tag { font-size: 11px; background: #ffeded; color: #d9534f; padding: 3px 8px; border-radius: 6px; margin-bottom: 6px; font-weight: 700; }
     .flip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; }
     @media (max-width: 550px) { .flip-grid { grid-template-columns: 1fr; } }
-    .flip-card { perspective: 1000px; height: 160px; cursor: pointer; }
+    .flip-card { perspective: 1000px; height: 165px; cursor: pointer; }
     .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
     .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
-    .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+    .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
     .flip-front { background: #fbfcfc; color: var(--text-main); }
     .flip-back { background: #113f48; color: white; transform: rotateY(180deg); }
-    
-    .bad-tag { font-size: 11px; background: #ffeded; color: #d9534f; padding: 3px 8px; border-radius: 6px; margin-bottom: 8px; font-weight: 700; }
-    .do-tag { font-size: 11px; background: #e8f8f5; color: #2e7d32; padding: 3px 8px; border-radius: 6px; margin-bottom: 6px; font-weight: 700; }
 
-    /* 4. 빌런 & 히어로 도감 */
+    /* 4. 빌런 & 히어로 */
     .villain-hero-container { flex: 1; min-height: 340px; }
     .hero-flip-card { perspective: 1000px; width: 100%; height: 100%; min-height: 340px; cursor: pointer; }
     .hero-flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
@@ -381,185 +280,32 @@
     .hero-back { transform: rotateY(180deg); background: #f0f9f8; }
     .hero-img { width: 100%; height: 100%; object-fit: contain; flex: 1; }
 
-    /* 최하단 캠페인 응원 가로 섹션 */
-    .cheer-section {
-      max-width: 1100px;
-      margin: 32px auto 0;
-      padding: 0 20px;
-    }
+    /* 최하단 캠페인 응원 섹션 */
+    .cheer-section { max-width: 1100px; margin: 32px auto 0; padding: 0 20px; }
+    .cheer-container { background: linear-gradient(135deg, #e8f4f4 0%, #d8ecec 100%); border: 1px solid #c2e0e0; border-radius: 20px; padding: 24px 28px; color: #1a2e2e; display: flex; align-items: flex-start; gap: 24px; box-shadow: 0 4px 15px rgba(13, 138, 138, 0.06); }
+    @media (max-width: 850px) { .cheer-container { flex-direction: column; text-align: center; padding: 20px; } }
 
-    .cheer-container {
-      background: linear-gradient(135deg, #e8f4f4 0%, #d8ecec 100%);
-      border: 1px solid #c2e0e0;
-      border-radius: 20px;
-      padding: 24px 28px;
-      color: #1a2e2e;
-      display: flex;
-      align-items: flex-start;
-      gap: 24px;
-      box-shadow: 0 4px 15px rgba(13, 138, 138, 0.06);
-    }
-    @media (max-width: 850px) {
-      .cheer-container { flex-direction: column; text-align: center; padding: 20px; }
-    }
-
-    /* 좋아요 버튼 */
     .like-box { flex-shrink: 0; padding-top: 4px; }
-    .like-btn {
-      background: #ffffff;
-      color: #0d8a8a;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 50px;
-      font-weight: 800;
-      font-size: 15px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      transition: all 0.25s ease;
-    }
+    .like-btn { background: #ffffff; color: #0d8a8a; border: none; padding: 12px 20px; border-radius: 50px; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); transition: all 0.25s ease; }
     .like-btn:hover { transform: scale(1.04); background: #f0fdfd; }
     .like-btn.active { background: #ff7e36; color: white; }
-    .like-count {
-      background: rgba(13, 138, 138, 0.1);
-      color: #0d8a8a;
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 13px;
-    }
+    .like-count { background: rgba(13, 138, 138, 0.1); color: #0d8a8a; padding: 2px 10px; border-radius: 12px; font-size: 13px; }
     .like-btn.active .like-count { background: rgba(255, 255, 255, 0.25); color: white; }
 
-    /* 한 줄 응원 한마디 입력 & 스크롤 리스트 */
     .comment-box { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 12px; }
-    
     .comment-input-wrap { display: flex; gap: 8px; width: 100%; }
-    .comment-input-wrap input {
-      flex: 1;
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: 1px solid #bce0e0;
-      font-size: 13px;
-      font-family: inherit;
-      outline: none;
-      background: #ffffff;
-    }
-    .comment-submit-btn {
-      background: #ff7e36;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.2s;
-    }
+    .comment-input-wrap input { flex: 1; padding: 10px 16px; border-radius: 10px; border: 1px solid #bce0e0; font-size: 13px; font-family: inherit; outline: none; background: #ffffff; }
+    .comment-submit-btn { background: #ff7e36; color: white; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
     .comment-submit-btn:hover { background: #e66520; }
 
-    .comment-scroll-box {
-      background: #ffffff;
-      border: 1px solid #d2ecec;
-      border-radius: 12px;
-      padding: 10px 14px;
-      max-height: 130px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
+    .comment-scroll-box { background: #ffffff; border: 1px solid #d2ecec; border-radius: 12px; padding: 10px 14px; max-height: 130px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
     .comment-scroll-box::-webkit-scrollbar { width: 6px; }
     .comment-scroll-box::-webkit-scrollbar-thumb { background: #0d8a8a; border-radius: 10px; }
     .comment-scroll-box::-webkit-scrollbar-track { background: #eef7f7; }
 
-    .comment-item {
-      font-size: 13px;
-      color: #2b2b2b;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      line-height: 1.4;
-      padding-bottom: 6px;
-      border-bottom: 1px dashed #eaf2f2;
-    }
-    .comment-item:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-    .comment-item-badge {
-      font-size: 10px;
-      font-weight: 700;
-      background: #e8f4f4;
-      color: #0d8a8a;
-      padding: 2px 6px;
-      border-radius: 4px;
-      white-space: nowrap;
-    }
-
-     /* 카툰 플립 카드 전용 스타일 (높이 반응형 보정) */
-    .cartoon-flip-card {
-      perspective: 1000px;
-      width: 100%;
-      height: auto;
-      cursor: pointer;
-    }
-    
-    .cartoon-flip-inner {
-      position: relative;
-      width: 100%;
-      height: auto;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      transform-style: preserve-3d;
-    }
-    
-    .cartoon-flip-card.flipped .cartoon-flip-inner {
-      transform: rotateY(180deg);
-    }
-    
-    .cartoon-front, .cartoon-back {
-      width: 100%;
-      height: auto;
-      backface-visibility: hidden;
-      border-radius: 14px;
-      border: 1px solid var(--border-color);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      background: #fafafa;
-      padding: 12px;
-    }
-
-    .cartoon-front {
-      position: relative;
-    }
-
-    .cartoon-back {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      transform: rotateY(180deg);
-      background: #f4fafb;
-    }
-
-    .cartoon-flip-badge {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--main-teal-dark);
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .cartoon-flip-hint {
-      font-size: 12px;
-      color: var(--point-orange);
-      font-weight: 700;
-    }
+    .comment-item { font-size: 13px; color: #2b2b2b; display: flex; align-items: center; gap: 8px; line-height: 1.4; padding-bottom: 6px; border-bottom: 1px dashed #eaf2f2; }
+    .comment-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .comment-item-badge { font-size: 10px; font-weight: 700; background: #e8f4f4; color: #0d8a8a; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -579,23 +325,21 @@
 
   <div class="nav-container">
     <nav class="week-nav">
-      <div class="week-tab active" onclick="switchWeek(1)">1주차: 협업의 법칙</div>
-      <div class="week-tab disabled" onclick="alert('2주차는 차주에 오픈됩니다!')">2주차: 피드백 잔혹사 탈출기</div>
-      <div class="week-tab disabled" onclick="alert('3주차 준비 중입니다!')">3주차: 감정 회복 연구소</div>
+      <div class="week-tab" id="tabWeek1" onclick="switchWeek(1)">1주차: 협업의 법칙</div>
+      <div class="week-tab active" id="tabWeek2" onclick="switchWeek(2)">2주차: 피드백 잔혹사 탈출기</div>
+      <div class="week-tab disabled" onclick="alert('3주차는 차주에 오픈됩니다!')">3주차: 감정 회복 연구소</div>
       <div class="week-tab disabled" onclick="alert('4주차 준비 중입니다!')">4주차: 오피스 빌런 퇴치법</div>
     </nav>
 
     <div class="week-message-card">
-      <span class="week-message-label" id="weekLabel">1주차</span>
+      <span class="week-message-label" id="weekLabel">2주차</span>
       <div class="ticker-wrap">
-        <p class="week-message-text" id="mainMessage">일하려고 만났지, 싸우려고 만났나요? 서로 '뒷목' 잡지 않기 위한 협업 가이드</p>
+        <p class="week-message-text" id="mainMessage">피드백 주려다 원수 되지 말자고요…💀 주는 사람도, 받는 사람도 살아남는 피드백 잔혹사 탈출 가이드</p>
       </div>
     </div>
   </div>
 
-  <main class="container">
-
-    <!-- 1. 사례 카툰 섹션 -->
+  <main class="container" id="contentWeek1" style="display: none;">
     <section class="section-card">
       <div class="section-title">🖼️ 이번 주 사례 카툰</div>
       <p class="section-subtext">나 혹은 내 동료의 이야기일지도 몰라요. 카툰을 보며 함께 공감해 보세요!</p>
@@ -608,24 +352,22 @@
               <span class="cartoon-flip-hint">클릭해서 Case 2 보기 🔄</span>
             </div>
             <div class="cartoon-box">
-              <img src="cartoon_week1.png" alt="1주차 네컷카툰 1" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Case+1+Cartoon';">
+              <img src="cartoon_week1.png" alt="1주차 카툰 1" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Week+1+Case+1';">
             </div>
           </div>
-
           <div class="cartoon-back">
             <div class="cartoon-flip-badge">
               <span>Case 2. 내 생각만 무조건 고집하는 편협한 태도 😤</span>
               <span class="cartoon-flip-hint">클릭해서 Case 1 보기 🔄</span>
             </div>
             <div class="cartoon-box">
-              <img src="cartoon_week1_2.png" alt="1주차 네컷카툰 2" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Case+2+Cartoon';">
+              <img src="cartoon_week1_2.png" alt="1주차 카툰 2" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Week+1+Case+2';">
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 2. 에티켓 밸런스 게임 -->
     <section class="section-card">
       <div class="section-title">🎮 에티켓 밸런스 게임</div>
       <p class="section-subtext">밸런스 게임으로 알아보는 앱지스 피플의 성향! 당신의 선택은?</p>
@@ -634,39 +376,37 @@
         <div class="balance-q">가뜩이나 불쾌지수 높은 여름 💦<br>당신을 더 열받게 하는 매운맛 동료는 🌶️?</div>
         
         <div class="balance-options">
-          <div class="option-card" id="cardA">
+          <div class="option-card" id="cardW1A">
             <div class="option-title">A. "다 됩니다!"<br>🎈 호언장담 펑크형</div>
             <div class="option-desc">
               일정 검토 없이 "가능합니다!"<br>
               냅다 호언장담하더니 마감날<br>
               결국 펑크내고 잠수타는 동료<br>
-              <span style="font-size: 12px; color: #888; display: block; margin-top: 4px;">(차라리 솔직히 말해줘.. 😭)</span>
+              <span style="font-size: 11.5px; color: #888; display: block; margin-top: 4px;">(차라리 솔직히 말해줘.. 😭)</span>
             </div>
-            
             <div class="vote-action-area">
-              <button class="vote-btn btn-a" id="btnA" onclick="vote('A')">👍 A 선택하기</button>
-              <div class="vote-count-text" id="countBadgeA">공감 0회</div>
+              <button class="vote-btn btn-a" id="btnW1A" onclick="voteW1('A')">👍 A 선택하기</button>
+              <div class="vote-count-text" id="countBadgeW1A">공감 0회</div>
             </div>
           </div>
 
-          <div class="option-card" id="cardB">
+          <div class="option-card" id="cardW1B">
             <div class="option-title title-b">B. "제가 그걸 왜요?"<br>🛡️ 자동 반사 거절형</div>
             <div class="option-desc">
               "그게 제 성과에 반영되나요..?"<br>
               딱 내 성과 아니면 1초 만에<br>
               차갑게 선 긋고 거절하는 동료<br>
-              <span style="font-size: 12px; color: #888; display: block; margin-top: 4px;">(우리가 남이가, 원팀이라며... 👥)</span>
+              <span style="font-size: 11.5px; color: #888; display: block; margin-top: 4px;">(우리가 남이가, 원팀이라며... 👥)</span>
             </div>
-            
             <div class="vote-action-area">
-              <button class="vote-btn btn-b" id="btnB" onclick="vote('B')">👍 B 선택하기</button>
-              <div class="vote-count-text" id="countBadgeB">공감 0회</div>
+              <button class="vote-btn btn-b" id="btnW1B" onclick="voteW1('B')">👍 B 선택하기</button>
+              <div class="vote-count-text" id="countBadgeW1B">공감 0회</div>
             </div>
           </div>
         </div>
 
-        <div class="poll-summary" id="pollSummary" style="display: none;">
-          <div class="total-count-text">🔥 현재 총 <span id="totalCount">0</span>명이 공감 투표에 참여했습니다!</div>
+        <div class="poll-summary" id="pollSummaryW1" style="display: none;">
+          <div class="total-count-text">🔥 현재 총 <span id="totalCountW1">0</span>명이 공감 투표에 참여했습니다!</div>
           <div class="result-msg">
             💡 대책 없는 OK도, 무조건적인 NO도 이젠 그만.<br>
             현실적인 수락과 오픈 마인드로 진짜 협업을 완성해 보세요!
@@ -675,7 +415,6 @@
       </div>
     </section>
 
-    <!-- 3. 속마음 팩폭 번역기 -->
     <section class="section-card">
       <div class="section-title">💬 속마음 팩폭 번역기</div>
       <p class="section-subtext">말 한 끗 차이로 바뀌는 업무 분위기!<br>카드를 뒤집어 팩폭 속마음과 스마트한 대안을 확인하세요.</p>
@@ -689,7 +428,7 @@
             </div>
             <div class="flip-back">
               <p style="font-size:11px; color:#ffb3b3; word-break:keep-all;">🫥속마음: "읽었으면 읽었다,<br>나중에 본다 말이라도 해줘요ㅠ"</p>
-              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: "메시지 확인했습니다!<br>지금 회의 중이라 16시 이후에<br>확인 후 말씀드리겠습니다."<br>최소한의 답장은 해주는 센스!</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: "메시지 확인했습니다!<br>지금 회의 중이라 16시 이후에<br>확인 후 말씀드리겠습니다."</p>
             </div>
           </div>
         </div>
@@ -702,7 +441,7 @@
             </div>
             <div class="flip-back">
               <p style="font-size:11px; color:#ffb3b3; word-break:keep-all;">🫥속마음: "일주일 전부터<br>캘린더 초대에 회의실, 안건까지<br>다 적어뒀는데요..."</p>
-              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: 미리 공유된 캘린더 일정과<br>안건을 미리 체크하고 참석하는<br>센스를 보여주세요!</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: 미리 공유된 캘린더 일정과<br>안건을 체크하고 참석하는 센스!</p>
             </div>
           </div>
         </div>
@@ -715,7 +454,7 @@
             </div>
             <div class="flip-back">
               <p style="font-size:11px; color:#ffb3b3; word-break:keep-all;">🫥속마음: "자료 설명하느라<br>논의 시간이 부족해지잖아요..."</p>
-              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: 회의 전 핵심 자료를 5분만<br>미리 정독하고 들어오시면<br>훨씬 밀도 높은 논의가 됩니다!</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: 회의 전 핵심 자료를 5분만<br>미리 정독하고 들어와 주세요!</p>
             </div>
           </div>
         </div>
@@ -728,14 +467,13 @@
             </div>
             <div class="flip-back">
               <p style="font-size:11px; color:#ffb3b3; word-break:keep-all;">🫥속마음: "원칙을 깨고 진행했다가<br>문제가 생기면 책임은 누구 몫이죠?"</p>
-              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: 정해진 규정과 승인 절차를<br>선행한 뒤 요청해 주시는 것이<br>서로 안전한 협업의 시작입니다!</p>
+              <p style="font-size:12px; font-weight:bold; margin-top:6px; word-break:keep-all;">💡 Do: 정해진 규정과 승인 절차를<br>선행한 뒤 요청하는 배려!</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4. 빌런 & 히어로 도감 -->
     <section class="section-card">
       <div class="section-title">🪪 오늘의 빌런 & 히어로 프로필</div>
       <p class="section-subtext">나는 오늘 일터에서 어떤 캐릭터였을까요? 빌런👾???히어로🦸‍♂️???<br>빌런 카드를 클릭해 히어로로 변신해보아요!</p>
@@ -753,14 +491,320 @@
         </div>
       </div>
     </section>
-
   </main>
 
-  <!-- 최하단 캠페인 응원 & 호감도 조사 섹션 -->
+  <main class="container" id="contentWeek2">
+    <section class="section-card">
+      <div class="section-title">🖼️ 이번 주 사례 카툰</div>
+      <p class="section-subtext">나 혹은 내 동료의 이야기일지도 몰라요. 카툰을 보며 함께 공감해 보세요!</p>
+      
+      <div class="cartoon-flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="cartoon-flip-inner">
+          <div class="cartoon-front">
+            <div class="cartoon-flip-badge">
+              <span>Case 1. 피드백은 숙성한다고 맛있어지지 않습니다.🍷</span>
+              <span class="cartoon-flip-hint">클릭해서 Case 2 보기 🔄</span>
+            </div>
+            <div class="cartoon-box">
+              <img src="cartoon_week2_1.png" alt="2주차 카툰 1" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Week+2+Case+1';">
+            </div>
+          </div>
+
+          <div class="cartoon-back">
+            <div class="cartoon-flip-badge">
+              <span>Case 2. 화풀이성 피드백에 팀 전체가 눈치 게임 중 🧊</span>
+              <span class="cartoon-flip-hint">클릭해서 Case 1 보기 🔄</span>
+            </div>
+            <div class="cartoon-box">
+              <img src="cartoon_week2_2.png" alt="2주차 카툰 2" class="cartoon-img" onerror="this.src='https://via.placeholder.com/500x500?text=Week+2+Case+2';">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section class="section-card">
+  <div class="section-title">🎮 피드백 잔혹사 투표소</div>
+  <p class="section-subtext">
+    피드백 현장을 더 잔혹하게 만드는 유형은? 🩸<br>
+    탭을 선택해 [주는 사람]과 [받는 사람]의 최악의 피드백 상황을 골라보세요!
+  </p>
+  
+  <div class="balance-box">
+    <div class="balance-subtabs">
+      <button class="subtab-btn active" id="subtabGiver" onclick="switchBalanceTab('giver')">
+        🎯 피드백 주는 사람 편
+      </button>
+      <button class="subtab-btn" id="subtabReceiver" onclick="switchBalanceTab('receiver')">
+        👂 피드백 받는 사람 편
+      </button>
+    </div>
+
+    <!-- 피드백 주는 사람 -->
+    <div id="gameGiverBlock">
+      <div class="balance-q">
+        💥 말 한마디에 업무 분위기 와르르,<br>
+        피드백 잔혹사를 부르는 한마디는?
+      </div>
+
+      <div class="balance-options">
+
+        <!-- Giver A -->
+        <div class="option-card" id="cardGiverA">
+          <div class="option-title">
+            A. "어제는 빼라면서요…?"<br>
+            🎢 기준 롤러코스터형
+          </div>
+
+          <div class="option-desc">
+            "내용이 너무 많아요. 좀 빼주세요."<br>
+            → 수정해 갔더니 "근데 왜 이렇게 내용이 없어요?"<br>
+            수정할 때마다 결승선이 계속 움직이는 피드백
+            <span style="font-size: 11.5px; color: #888; display: block; margin-top: 4px;">
+              (도대체 정답이 뭐야..? 🎢)
+            </span>
+          </div>
+
+          <div class="vote-action-area">
+            <button class="vote-btn btn-a" id="btnGiverA" onclick="voteGiver('A')">
+              👍 A 선택하기
+            </button>
+            <div class="vote-count-text" id="countGiverA">공감 0회</div>
+          </div>
+        </div>
+
+        <!-- Giver B -->
+        <div class="option-card" id="cardGiverB">
+          <div class="option-title title-b">
+            B. "됐어요. 그냥 제가 할게요."<br>
+            ✋ 피드백 포기형
+          </div>
+
+          <div class="option-desc">
+            자료 보자마자 한숨 푹 쉬더니<br>
+            뭐가 문제인지 설명 없이<br>업무를 통째로 회수<br>
+            고쳐볼 기회마저 없는 피드백
+            <span style="font-size: 11.5px; color: #888; display: block; margin-top: 4px;">
+              (그럼 난 뭘 배우지..? 🥲)
+            </span>
+          </div>
+
+          <div class="vote-action-area">
+            <button class="vote-btn btn-b" id="btnGiverB" onclick="voteGiver('B')">
+              👍 B 선택하기
+            </button>
+            <div class="vote-count-text" id="countGiverB">공감 0회</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="poll-summary" id="summaryGiver" style="display: none;">
+        <div class="total-count-text">
+          🔥 현재 총 <span id="totalGiverCount">0</span>명이 공감 투표에 참여했습니다!
+        </div>
+
+        <div class="result-msg">
+          💡 잔혹사 탈출 TIP<br>
+          기준은 명확하게, 고칠 기회는 충분하게! 🎯
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 피드백 받는 사람 -->
+    <div id="gameReceiverBlock" style="display: none;">
+      <div class="balance-q">
+        💀 피드백 좀 해보려다 대화 의욕 뚝,<br>
+        피드백 잔혹사를 완성하는 리액션은?
+      </div>
+
+      <div class="balance-options">
+
+<!-- Receiver A -->
+<div class="option-card" id="cardReceiverA">
+  <div class="option-title">
+    A. "네네! 완벽히 이해했어요!"<br>
+    👻 피드백 증발형
+  </div>
+
+  <div class="option-desc">
+"네!" 대답은 세상 쿨하게 해놓고<br>
+                결과물엔 1도 반영 안 하는 동료<br>
+피드백만 소리소문없이 증발<br>
+                대답만 100점, 반영률은 0점!<br>
+    <span style="font-size: 11.5px; color: #888; display: block; margin-top: 6px;">
+      (내 말은 귓등으로 들은 건가요.. 🫠)
+    </span>
+  </div>
+
+          <div class="vote-action-area">
+            <button class="vote-btn btn-a" id="btnReceiverA" onclick="voteReceiver('A')">
+              👍 A 선택하기
+            </button>
+            <div class="vote-count-text" id="countReceiverA">공감 0회</div>
+          </div>
+        </div>
+
+        <!-- Receiver B -->
+<div class="option-card" id="cardReceiverB">
+  <div class="option-title title-b">
+    B. "아니, 그게 아니고요"<br>
+    🛡️ 핑계폭격 철벽방어형
+  </div>
+
+  <div class="option-desc">
+    피드백 꺼내기가 무섭게<br>
+"아니..그땐 날씨가 안 좋았고..." <br>
+랩 하듯 핑계부터 쏟아내는 동료<br>
+    자기합리화에 핑계만 수백개<span style="font-size: 11.5px; color:#888; display:block; margin-top:6px;">
+      (피드백 한마디 하기가 무섭네.. 🤐)
+    </span>
+  </div>
+
+          <div class="vote-action-area">
+            <button class="vote-btn btn-b" id="btnReceiverB" onclick="voteReceiver('B')">
+              👍 B 선택하기
+            </button>
+            <div class="vote-count-text" id="countReceiverB">공감 0회</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="poll-summary" id="summaryReceiver" style="display: none;">
+        <div class="total-count-text">
+          🔥 현재 총 <span id="totalReceiverCount">0</span>명이 공감 투표에 참여했습니다!
+        </div>
+
+        <div class="result-msg">
+          💡 잔혹사 탈출 TIP<br>
+          영혼 없는 “네” 대신 이해 확인을, 선방어 대신 경청을!
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section-card">
+  <div class="section-title">💬 피드백 한 끗 번역기</div>
+  <p class="section-subtext">
+    같은 뜻인데 왜 저 말은 덜 킹받지? 🤔<br>
+    카드를 뒤집어 피드백의 '한 끗 차이'를 확인해 보세요!
+  </p>
+  
+<div class="flip-grid">
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <span class="bad-tag">Bad Feedback (피드백 폭탄)</span>
+          <p style="font-weight: bold; font-size: 14px; line-height: 1.45; word-break: keep-all;">
+            "이것도 바꾸고, 저것도 고치고,<br>
+            이것까지 다시 해주세요."<br>
+            💣
+          </p>
+        </div>
+        <div class="flip-back">
+          <p style="font-size: 12px; color: #ffb3b3; line-height: 1.4; word-break: keep-all;">
+            🫥속마음: "그래서...<br>뭐부터 고쳐야 하죠?"
+          </p>
+          <p style="font-size: 12.5px; font-weight: bold; margin-top: 6px; line-height: 1.4; word-break: keep-all;">
+            💡 Do: "우선 A부터 수정하고,<br>B는 그다음에 봅시다."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <span class="bad-tag">Bad Feedback (비교 공격)</span>
+          <p style="font-weight: bold; font-size: 14px; line-height: 1.45; word-break: keep-all;">
+            "OO님은 이런 거 잘하던데,<br>
+            왜 이렇게 차이가 나죠?"<br>
+            🆚
+          </p>
+        </div>
+        <div class="flip-back">
+          <p style="font-size: 12px; color: #ffb3b3; line-height: 1.4; word-break: keep-all;">
+            🫥속마음: "제 업무 얘기인데<br>왜 다른 사람이 등장하죠...?"
+          </p>
+          <p style="font-size: 12.5px; font-weight: bold; margin-top: 6px; line-height: 1.4; word-break: keep-all;">
+            💡 Do: "남과의 비교 대신 🙅‍♂️<br>업무에만 집중하기!"
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <span class="bad-tag">Bad Feedback (옥에 티 확대)</span>
+          <p style="font-weight: bold; font-size: 14px; line-height: 1.45; word-break: keep-all;">
+            "내용이야 뭐 그렇다 치고,<br>
+            오탈자 다시 수정하세요."<br>
+            🔍
+          </p>
+        </div>
+        <div class="flip-back">
+          <p style="font-size: 12px; color: #ffb3b3; line-height: 1.4; word-break: keep-all;">
+            🫥속마음: "밤새 고민한 핵심 전략은<br>'그렇다 치고'로 퉁치시나요..."
+          </p>
+          <p style="font-size: 12.5px; font-weight: bold; margin-top: 6px; line-height: 1.4; word-break: keep-all;">
+            💡 Do: "전체적인 기획 방향 좋아요! 👏<br>사소한 오탈자 몇 개만 바로 잡아봅시다."
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <span class="bad-tag">Bad Request (기습 번개 요청)</span>
+          <p style="font-weight: bold; font-size: 14px; line-height: 1.45; word-break: keep-all;">
+            "10분 뒤 최종 보고인데,<br>
+            피드백 지금 바로 부탁드려요!"<br>
+            ⏰
+          </p>
+        </div>
+        <div class="flip-back">
+          <p style="font-size: 12px; color: #ffb3b3; line-height: 1.4; word-break: keep-all;">
+            🫥속마음: "10분 만에 이걸 다 보고<br>피드백까지 달라고...?"
+          </p>
+          <p style="font-size: 12.5px; font-weight: bold; margin-top: 6px; line-height: 1.4; word-break: keep-all;">
+            💡 Do: "검토와 수정 시간을 고려해<br>마감 전 여유를 두고 미리 공유하기!"
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+    <section class="section-card">
+      <div class="section-title">🪪 오늘의 빌런 & 히어로 프로필</div>
+      <p class="section-subtext">나는 오늘 일터에서 어떤 캐릭터였을까요? 빌런👾???히어로🦸‍♂️???<br>빌런 카드를 클릭해 히어로로 변신해보아요!</p>
+      
+      <div class="villain-hero-container">
+        <div class="hero-flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="hero-flip-inner">
+            <div class="hero-front">
+              <img src="villain_week2.jpg" alt="2주차 빌런" class="hero-img" onerror="this.src='https://via.placeholder.com/500x350/ffeded/d9534f?text=👾+Week+2+Villain';">
+            </div>
+            <div class="hero-back">
+              <img src="hero_week2.png" alt="2주차 히어로" class="hero-img" onerror="this.src='https://via.placeholder.com/500x350/e8f8f5/0d8a8a?text=🦸‍♂️+Week+2+Hero';">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <section class="cheer-section">
     <div class="cheer-container">
       
-      <!-- 좋아요(호감도) 버튼 -->
       <div class="like-box">
         <button class="like-btn" id="likeBtn" onclick="toggleLike()">
           <span class="like-icon">💖</span>
@@ -769,23 +813,19 @@
         </button>
       </div>
 
-      <!-- 한 줄 응원 한마디 등록 영역 -->
       <div class="comment-box">
         <div class="comment-input-wrap">
-          <input type="text" id="commentInput" placeholder="이번주 컨텐츠가 마음에 드시면 따뜻한 한마디를 남겨주세요! (최대 30자)" maxlength="30" onkeypress="if(event.keyCode==13) addComment()">
+          <input type="text" id="commentInput" placeholder="2주차 콘텐츠 어떠셨나요? 따뜻한 응원 or 나만의 피드백 썰 남기기! ✨ (최대 50자)" maxlength="50" oneypress="if(event.keyCode==13) addComment()">
           <button class="comment-submit-btn" onclick="addComment()">등록</button>
         </div>
 
-        <div class="comment-scroll-box" id="commentList">
-          <!-- 실시간 댓글 리스트 -->
-        </div>
+        <div class="comment-scroll-box" id="commentList"></div>
       </div>
 
     </div>
   </section>
 
   <script>
-    // 1. Firebase 연동 설정
     const firebaseConfig = {
       apiKey: "AIzaSyCQN5QIYAwJPSb7QvIRIJiR69Lg8pas6rA",
       authDomain: "abxis-687f4.firebaseapp.com",
@@ -798,95 +838,141 @@
     }
     const db = firebase.database();
 
-    // Firebase DB 참조 지정
-    const votesRef = db.ref("votes");
+    // 현재 활성화된 주차 (기본값: 2주차)
+    let currentActiveWeek = 2;
+
+    // Firebase References
     const likesRef = db.ref("likes");
-    const commentsRef = db.ref("comments");
+    const votesW1Ref = db.ref("votes"); // 기존 1주차 호환
+    const votesGiverRef = db.ref("votes/week2/giver");
+    const votesReceiverRef = db.ref("votes/week2/receiver");
 
-    let countA = 0;
-    let countB = 0;
-    let currentVote = null;
+    // 1주차 상태
+    let countW1A = 0, countW1B = 0;
+    let currentVoteW1 = localStorage.getItem("abxis_vote_w1") || null;
+
+    // 2주차 상태
+    let countGiverA = 0, countGiverB = 0;
+    let currentVoteGiver = localStorage.getItem("abxis_vote_w2_giver") || null;
+
+    let countReceiverA = 0, countReceiverB = 0;
+    let currentVoteReceiver = localStorage.getItem("abxis_vote_w2_receiver") || null;
+
+    // 호감도 상태
     let likeCount = 0;
-    let hasLiked = false;
+    let hasLiked = localStorage.getItem("abxis_liked") === "true";
 
-    // 페이지 초기 로드
+    // ----------------------------------------------------
+    // 초기 실행
+    // ----------------------------------------------------
     window.addEventListener('DOMContentLoaded', () => {
-      listenForVotes();
       listenForLikes();
-      listenForComments();
+      listenForVotesW1();
+      listenForVotesGiver();
+      listenForVotesReceiver();
+
+      if (hasLiked) {
+        document.getElementById('likeBtn').classList.add('active');
+      }
+
+      // 기본적으로 2주차 활성화 실행
+      switchWeek(2);
     });
 
-    // ==========================================
-    // 2. 에티켓 밸런스 게임 투표 (Firebase 실시간 연동)
-    // ==========================================
-    function listenForVotes() {
-      votesRef.on('value', (snapshot) => {
+    // ----------------------------------------------------
+    // 주차 탭 전환 함수 (페이지 이동 없이 본문 교체)
+    // ----------------------------------------------------
+    function switchWeek(weekNum) {
+      currentActiveWeek = weekNum;
+
+      const tabW1 = document.getElementById('tabWeek1');
+      const tabW2 = document.getElementById('tabWeek2');
+      const contentW1 = document.getElementById('contentWeek1');
+      const contentW2 = document.getElementById('contentWeek2');
+      const weekLabel = document.getElementById('weekLabel');
+      const mainMessage = document.getElementById('mainMessage');
+      const commentInput = document.getElementById('commentInput');
+
+      if (weekNum === 1) {
+        tabW1.classList.add('active');
+        tabW2.classList.remove('active');
+        contentW1.style.display = 'grid';
+        contentW2.style.display = 'none';
+        weekLabel.innerText = '1주차';
+        mainMessage.innerText = "일하려고 만났지, 싸우려고 만났나요? 서로 '뒷목' 잡지 않기 위한 협업 가이드";
+        commentInput.placeholder = "1주차 콘텐츠에 대한 따뜻한 한마디를 남겨주세요! (최대 30자)";
+      } else if (weekNum === 2) {
+        tabW1.classList.remove('active');
+        tabW2.classList.add('active');
+        contentW1.style.display = 'none';
+        contentW2.style.display = 'grid';
+        weekLabel.innerText = '2주차';
+        mainMessage.innerText = "피드백 주려다 원수 되지 말자고요…💀 주는 사람도, 받는 사람도 살아남는 피드백 잔혹사 탈출 가이드";
+        commentInput.placeholder = "2주차 콘텐츠 어떠셨나요? 따뜻한 응원 or 나만의 피드백 썰 남기기! ✨ (최대 50자)";
+      }
+
+      // 주차별 댓글 리스너 교체
+      listenForComments(weekNum);
+    }
+
+    // ----------------------------------------------------
+    // 1주차 투표 로직
+    // ----------------------------------------------------
+    function listenForVotesW1() {
+      votesW1Ref.on('value', (snapshot) => {
         const data = snapshot.val() || {};
-        countA = typeof data.optionA === 'number' ? data.optionA : 0;
-        countB = typeof data.optionB === 'number' ? data.optionB : 0;
-        updateVoteUI();
-      }, (error) => {
-        console.error("Firebase 투표 로드 오류:", error);
+        countW1A = typeof data.optionA === 'number' ? data.optionA : 0;
+        countW1B = typeof data.optionB === 'number' ? data.optionB : 0;
+        updateVoteW1UI();
       });
     }
 
-    function vote(type) {
-      if (currentVote === type) {
-        if (type === 'A') countA = Math.max(0, countA - 1);
-        if (type === 'B') countB = Math.max(0, countB - 1);
-        currentVote = null;
-      } else if (currentVote !== null) {
-        if (currentVote === 'A') countA = Math.max(0, countA - 1);
-        else countB = Math.max(0, countB - 1);
-
-        if (type === 'A') countA++;
-        else countB++;
-
-        currentVote = type;
+    function voteW1(type) {
+      const prev = currentVoteW1;
+      if (prev === type) {
+        currentVoteW1 = null;
+        localStorage.removeItem("abxis_vote_w1");
       } else {
-        if (type === 'A') countA++;
-        if (type === 'B') countB++;
-        currentVote = type;
+        currentVoteW1 = type;
+        localStorage.setItem("abxis_vote_w1", type);
       }
 
-      updateVoteUI();
-
-      votesRef.set({
-        optionA: countA,
-        optionB: countB
-      }).catch((error) => {
-        console.error("투표 데이터 저장 오류:", error);
+      votesW1Ref.transaction((data) => {
+        data = data || { optionA: 0, optionB: 0 };
+        if (prev === 'A') data.optionA = Math.max(0, (data.optionA || 0) - 1);
+        if (prev === 'B') data.optionB = Math.max(0, (data.optionB || 0) - 1);
+        if (currentVoteW1 === 'A') data.optionA = (data.optionA || 0) + 1;
+        if (currentVoteW1 === 'B') data.optionB = (data.optionB || 0) + 1;
+        return data;
       });
+      updateVoteW1UI();
     }
 
-    function updateVoteUI() {
-      document.getElementById('countBadgeA').innerText = '공감 ' + countA + '회';
-      document.getElementById('countBadgeB').innerText = '공감 ' + countB + '회';
-      
-      const total = countA + countB;
-      document.getElementById('totalCount').innerText = total;
+    function updateVoteW1UI() {
+      document.getElementById('countBadgeW1A').innerText = '공감 ' + countW1A + '회';
+      document.getElementById('countBadgeW1B').innerText = '공감 ' + countW1B + '회';
+      const total = countW1A + countW1B;
+      document.getElementById('totalCountW1').innerText = total;
 
-      const cardA = document.getElementById('cardA');
-      const cardB = document.getElementById('cardB');
-      const btnA = document.getElementById('btnA');
-      const btnB = document.getElementById('btnB');
-      const pollSummary = document.getElementById('pollSummary');
+      const cardA = document.getElementById('cardW1A');
+      const cardB = document.getElementById('cardW1B');
+      const btnA = document.getElementById('btnW1A');
+      const btnB = document.getElementById('btnW1B');
+      const summary = document.getElementById('pollSummaryW1');
 
-      if (currentVote !== null || total > 0) {
-        pollSummary.style.display = 'block';
-      }
+      if (currentVoteW1 !== null || total > 0) summary.style.display = 'block';
 
       cardA.classList.remove('selected-a');
       cardB.classList.remove('selected-b');
       btnA.classList.remove('active');
       btnB.classList.remove('active');
 
-      if (currentVote === 'A') {
+      if (currentVoteW1 === 'A') {
         cardA.classList.add('selected-a');
         btnA.classList.add('active');
         btnA.innerHTML = '<div>✅ A 선택됨</div><div class="btn-sub-text">(취소하려면 클릭)</div>';
         btnB.innerText = '👍 B 선택하기';
-      } else if (currentVote === 'B') {
+      } else if (currentVoteW1 === 'B') {
         cardB.classList.add('selected-b');
         btnB.classList.add('active');
         btnB.innerHTML = '<div>✅ B 선택됨</div><div class="btn-sub-text">(취소하려면 클릭)</div>';
@@ -897,9 +983,161 @@
       }
     }
 
-    // ==========================================
-    // 3. 최하단 컨텐츠 호감도 조사 (Firebase 전환 연동)
-    // ==========================================
+    // ----------------------------------------------------
+    // 2주차 투표 로직 (주는 사람 & 받는 사람)
+    // ----------------------------------------------------
+    function switchBalanceTab(tab) {
+      const giverBlock = document.getElementById('gameGiverBlock');
+      const receiverBlock = document.getElementById('gameReceiverBlock');
+      const subtabGiver = document.getElementById('subtabGiver');
+      const subtabReceiver = document.getElementById('subtabReceiver');
+
+      if (tab === 'giver') {
+        giverBlock.style.display = 'block';
+        receiverBlock.style.display = 'none';
+        subtabGiver.classList.add('active');
+        subtabReceiver.classList.remove('active');
+      } else {
+        giverBlock.style.display = 'none';
+        receiverBlock.style.display = 'block';
+        subtabGiver.classList.remove('active');
+        subtabReceiver.classList.add('active');
+      }
+    }
+
+    function listenForVotesGiver() {
+      votesGiverRef.on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        countGiverA = typeof data.optionA === 'number' ? data.optionA : 0;
+        countGiverB = typeof data.optionB === 'number' ? data.optionB : 0;
+        updateGiverUI();
+      });
+    }
+
+    function voteGiver(type) {
+      const prev = currentVoteGiver;
+      if (prev === type) {
+        currentVoteGiver = null;
+        localStorage.removeItem("abxis_vote_w2_giver");
+      } else {
+        currentVoteGiver = type;
+        localStorage.setItem("abxis_vote_w2_giver", type);
+      }
+
+      votesGiverRef.transaction((data) => {
+        data = data || { optionA: 0, optionB: 0 };
+        if (prev === 'A') data.optionA = Math.max(0, (data.optionA || 0) - 1);
+        if (prev === 'B') data.optionB = Math.max(0, (data.optionB || 0) - 1);
+        if (currentVoteGiver === 'A') data.optionA = (data.optionA || 0) + 1;
+        if (currentVoteGiver === 'B') data.optionB = (data.optionB || 0) + 1;
+        return data;
+      });
+      updateGiverUI();
+    }
+
+    function updateGiverUI() {
+      document.getElementById('countGiverA').innerText = '공감 ' + countGiverA + '회';
+      document.getElementById('countGiverB').innerText = '공감 ' + countGiverB + '회';
+      const total = countGiverA + countGiverB;
+      document.getElementById('totalGiverCount').innerText = total;
+
+      const cardA = document.getElementById('cardGiverA');
+      const cardB = document.getElementById('cardGiverB');
+      const btnA = document.getElementById('btnGiverA');
+      const btnB = document.getElementById('btnGiverB');
+      const summary = document.getElementById('summaryGiver');
+
+      if (currentVoteGiver !== null || total > 0) summary.style.display = 'block';
+
+      cardA.classList.remove('selected-a');
+      cardB.classList.remove('selected-b');
+      btnA.classList.remove('active');
+      btnB.classList.remove('active');
+
+      if (currentVoteGiver === 'A') {
+        cardA.classList.add('selected-a');
+        btnA.classList.add('active');
+        btnA.innerHTML = '<div>✅ A 선택됨</div><div class="btn-sub-text">(취소하려면 클릭)</div>';
+        btnB.innerText = '👍 B 선택하기';
+      } else if (currentVoteGiver === 'B') {
+        cardB.classList.add('selected-b');
+        btnB.classList.add('active');
+        btnB.innerHTML = '<div>✅ B 선택됨</div><div class="btn-sub-text">(취소하려면 클릭)</div>';
+        btnA.innerText = '👍 A 선택하기';
+      } else {
+        btnA.innerText = '👍 A 선택하기';
+        btnB.innerText = '👍 B 선택하기';
+      }
+    }
+
+    function listenForVotesReceiver() {
+      votesReceiverRef.on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        countReceiverA = typeof data.optionA === 'number' ? data.optionA : 0;
+        countReceiverB = typeof data.optionB === 'number' ? data.optionB : 0;
+        updateReceiverUI();
+      });
+    }
+
+    function voteReceiver(type) {
+      const prev = currentVoteReceiver;
+      if (prev === type) {
+        currentVoteReceiver = null;
+        localStorage.removeItem("abxis_vote_w2_receiver");
+      } else {
+        currentVoteReceiver = type;
+        localStorage.setItem("abxis_vote_w2_receiver", type);
+      }
+
+      votesReceiverRef.transaction((data) => {
+        data = data || { optionA: 0, optionB: 0 };
+        if (prev === 'A') data.optionA = Math.max(0, (data.optionA || 0) - 1);
+        if (prev === 'B') data.optionB = Math.max(0, (data.optionB || 0) - 1);
+        if (currentVoteReceiver === 'A') data.optionA = (data.optionA || 0) + 1;
+        if (currentVoteReceiver === 'B') data.optionB = (data.optionB || 0) + 1;
+        return data;
+      });
+      updateReceiverUI();
+    }
+
+    function updateReceiverUI() {
+      document.getElementById('countReceiverA').innerText = '공감 ' + countReceiverA + '회';
+      document.getElementById('countReceiverB').innerText = '공감 ' + countReceiverB + '회';
+      const total = countReceiverA + countReceiverB;
+      document.getElementById('totalReceiverCount').innerText = total;
+
+      const cardA = document.getElementById('cardReceiverA');
+      const cardB = document.getElementById('cardReceiverB');
+      const btnA = document.getElementById('btnReceiverA');
+      const btnB = document.getElementById('btnReceiverB');
+      const summary = document.getElementById('summaryReceiver');
+
+      if (currentVoteReceiver !== null || total > 0) summary.style.display = 'block';
+
+      cardA.classList.remove('selected-a');
+      cardB.classList.remove('selected-b');
+      btnA.classList.remove('active');
+      btnB.classList.remove('active');
+
+      if (currentVoteReceiver === 'A') {
+        cardA.classList.add('selected-a');
+        btnA.classList.add('active');
+        btnA.innerHTML = '<div>✅ A 선택됨</div><div class="btn-sub-text">(취소하려면 클릭)</div>';
+        btnB.innerText = '👍 B 선택하기';
+      } else if (currentVoteReceiver === 'B') {
+        cardB.classList.add('selected-b');
+        btnB.classList.add('active');
+        btnB.innerHTML = '<div>✅ B 선택됨</div><div class="btn-sub-text">(취소하려면 클릭)</div>';
+        btnA.innerText = '👍 A 선택하기';
+      } else {
+        btnA.innerText = '👍 A 선택하기';
+        btnB.innerText = '👍 B 선택하기';
+      }
+    }
+
+    // ----------------------------------------------------
+    // 호감도 조사 (1, 2주차 통합)
+    // ----------------------------------------------------
     function listenForLikes() {
       likesRef.on('value', (snapshot) => {
         const data = snapshot.val();
@@ -910,51 +1148,68 @@
 
     function toggleLike() {
       const btn = document.getElementById('likeBtn');
-
       if (!hasLiked) {
         hasLiked = true;
+        localStorage.setItem("abxis_liked", "true");
         btn.classList.add('active');
-        likesRef.transaction((current) => (current || 0) + 1);
+        likesRef.transaction((curr) => (curr || 0) + 1);
       } else {
         hasLiked = false;
+        localStorage.setItem("abxis_liked", "false");
         btn.classList.remove('active');
-        likesRef.transaction((current) => Math.max(0, (current || 0) - 1));
+        likesRef.transaction((curr) => Math.max(0, (curr || 0) - 1));
       }
     }
 
-    // ==========================================
-    // 4. 실시간 댓글 응원 기능
-    // ==========================================
-    function listenForComments() {
-      const defaultComments = [
+// ----------------------------------------------------
+    // 댓글 기능 (1주차 기존 댓글 복구 & 2주차 분리)
+    // ----------------------------------------------------
+    let currentCommentsRef = null;
+
+    function listenForComments(weekNum) {
+      if (currentCommentsRef) currentCommentsRef.off();
+
+      // 1주차는 기존 데이터가 담긴 'comments', 2주차는 'comments_week2'로 분리
+      const path = weekNum === 1 ? "comments" : "comments_week2";
+      currentCommentsRef = db.ref(path);
+
+      const defaultComments = weekNum === 1 ? [
         "이수앱지스 화이팅!! CM, CA도 화이팅!!! 💪",
         "에티켓 가이드 너무 재밌어요! 팀원들과 공유할게요 👍",
         "이번 주 콘텐츠 대박! 2주차도 벌써 기대됩니다 ✨"
+      ] : [
+        '"알아서 센스있게"는 이제 그만! 🙅‍♂️',
+        "방향과 대안을 주는 피드백이 진짜 최고였어요 👍",
+        "피드백 받을 때 방어기제 끄기 실천 중 ㅎㅎ",
+        "2주차 피드백 가이드 팀원들과 공유 완료! 화이팅 ✨"
       ];
 
-      commentsRef.on('value', (snapshot) => {
+      currentCommentsRef.on('value', (snapshot) => {
         const data = snapshot.val();
         const container = document.getElementById('commentList');
         container.innerHTML = '';
 
         if (data) {
-          const userCommentsArray = Object.values(data).reverse();
-          userCommentsArray.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'comment-item';
-            div.innerHTML = `<span class="comment-item-badge">💬</span> <span>${escapeHtml(item.text)}</span>`;
-            container.appendChild(div);
+          const userComments = Object.values(data).reverse();
+          userComments.forEach(item => {
+            // 유저 댓글 텍스트 안전 추출
+            const textVal = (item && item.text) ? item.text : (typeof item === 'string' ? item : '');
+            if (textVal) {
+              const div = document.createElement('div');
+              div.className = 'comment-item';
+              div.innerHTML = `<span class="comment-item-badge">💬</span> <span>${escapeHtml(textVal)}</span>`;
+              container.appendChild(div);
+            }
           });
         }
 
+        // 기본 안내 댓글 추가 노출
         defaultComments.forEach(text => {
           const div = document.createElement('div');
           div.className = 'comment-item';
           div.innerHTML = `<span class="comment-item-badge">💬</span> <span>${escapeHtml(text)}</span>`;
           container.appendChild(div);
         });
-      }, (error) => {
-        console.error("Firebase 댓글 읽기 오류:", error);
       });
     }
 
@@ -967,7 +1222,9 @@
         return;
       }
 
-      commentsRef.push({
+      if (!currentCommentsRef) return;
+
+      currentCommentsRef.push({
         text: text,
         timestamp: Date.now()
       }).then(() => {
@@ -975,32 +1232,14 @@
         const container = document.getElementById('commentList');
         container.scrollTop = 0;
         alert('소중한 한마디가 등록되었습니다! 😊');
-      }).catch((error) => {
-        console.error("댓글 등록 오류:", error);
+      }).catch((err) => {
+        console.error("댓글 등록 오류:", err);
         alert('등록 중 오류가 발생했습니다.');
       });
     }
 
-    // 주차 이동 탭
-    function switchWeek(weekNum) {
-      const messages = {
-        1: "일하려고 만났지, 싸우려고 만났나요? 서로 '뒷목' 잡지 않기 위한 협업 가이드",
-        2: "상처 주는 화풀이는 NO! 서로 피가 되고 살이 되는 SMART 피드백",
-        3: "대화 한 끗 차이로 앙금 제로! 오해를 신뢰로 바꾸는 관계와 대화법",
-        4: "냄새, 소음, 인사, 복장까지! 지킬 건 지키는 센스 만점 오피스 매너"
-      };
-
-      if (weekNum === 1) {
-        document.getElementById('weekLabel').innerText = weekNum + '주차';
-        document.getElementById('mainMessage').innerText = messages[weekNum];
-      } else {
-        alert(weekNum + '주차 컨텐츠는 아직 준비 중입니다.');
-      }
-    }
-
-    // XSS 방지 함수
-    function escapeHtml(text) {
-      return text
+    function escapeHtml(str) {
+      return str
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
