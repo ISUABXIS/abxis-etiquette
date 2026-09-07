@@ -2065,8 +2065,8 @@ function switchWeek(weekNum) {
         pillRewardsRef.child("winnerCount").once("value", (snap) => {
           const currentCount = snap.val() || 0;
           
-          // 아직 10개가 다 안 팔렸고, 35% 확률에 당첨된 경우
-          const isWinner = (currentCount < TOTAL_LIMIT) && (Math.random() < 0.35);
+          // 아직 10개가 다 안 팔렸고, 45% 확률에 당첨된 경우
+          const isWinner = (currentCount < TOTAL_LIMIT) && (Math.random() < 0.45);
           let wonItem = "";
 
           if (isWinner) {
@@ -2080,10 +2080,10 @@ function switchWeek(weekNum) {
           const resultData = {
             isWinner: isWinner,
             prize: wonItem,
-            title: isWinner ? "🎉 뜻밖의 효능 추가 발견!" : "✨ 테스트 정상 완료!",
+            title: isWinner ? "🎉 뜻밖의 효능 추가 발견!" : "✨ 정상 투여 완료!",
             desc: isWinner 
               ? `럭키~ <strong>${wonItem}</strong> 당첨!`
-              : "비록 뜻밖의 효능(🎁)은 빗겨갔지만, 장착 완료된 매너 센스로 오늘 하루도 화이팅하세요! 🏃💨",
+              : "비록 뜻밖의 효능(🎁)은 빗겨갔지만, 장착 완료된 매너와 센스로 오늘 하루도 화이팅하세요! 🏃💨",
             icon: isWinner ? "🎁" : "🦸‍♂️"
           };
 
