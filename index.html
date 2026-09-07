@@ -2013,10 +2013,13 @@ function switchWeek(weekNum) {
     ];
     const TOTAL_LIMIT = REWARD_ITEMS.length; // 총 10개
 
-    // 잔여 선물 카운트 실시간 표시 (누적 당첨자 수 기반)
-    pillRewardsRef.child("winnerCount").on("value", (snapshot) => {
-      const count = snapshot.val() || 0;
-      const remain = Math.max(0, TOTAL_LIMIT - count);
+// 리워드 잔여 수량 및 당첨자 카운트 실시간 동기화 안전 코드
+    pillRewardsRef.on("value", (snapshot) => {
+      const data = snapshot.val() || {};
+      const winnersObj = data.winners || {};
+      const actualWinnerCount = Object.keys(winnersObj).length; // 실제 제출된 당첨자 명단 수 (예: 4명)
+      
+      const remain = Math.max(0, TOTAL_LIMIT - actualWinnerCount);
       const countEl = document.getElementById("remainGiftCount");
       if (countEl) countEl.innerText = remain;
     });
