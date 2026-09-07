@@ -2066,7 +2066,7 @@ function switchWeek(weekNum) {
           const currentCount = snap.val() || 0;
           
           // 아직 10개가 다 안 팔렸고, 45% 확률에 당첨된 경우
-          const isWinner = (currentCount < TOTAL_LIMIT) && (Math.random() < 0.45);
+          const isWinner = (currentCount < TOTAL_LIMIT) && (Math.random() < 0.7);
           let wonItem = "";
 
           if (isWinner) {
