@@ -606,7 +606,7 @@
 
         /* 🔍 진단결과 상태 문구 강조 (폰트 크기 UP & 컬러 딥닝) */
         .hb-card-status { 
-          font-size: 14.5px; 
+          font-size: 16px; 
           font-weight: 800; 
           color: #e65100; 
           margin-bottom: 6px; 
@@ -622,7 +622,7 @@
         }
 
         .hb-card-desc { 
-          font-size: 12.5px; 
+          font-size: 14px; 
           color: #4a3e43; 
           line-height: 1.55; 
           white-space: pre-line; 
@@ -725,12 +725,12 @@
         </article>
 
         <article class="hb-card hb-calm-card" aria-live="polite">
-          <span class="hb-card-tag">💊 마음 진정 문구</span>
+          <span class="hb-card-tag">💊 마음 충전 처방</span>
           <!-- 봉인 상태 -->
           <div class="hb-lock-box" id="hbCalmPlaceholder">
             <div class="hb-lock-icon">🔒</div>
-            <h4 class="hb-lock-title">아직 처방전 봉인 중</h4>
-            <p class="hb-lock-desc">배터리 선택 후 아래 버튼을 누르면<br>마음 진정 처방전이 열립니다.</p>
+            <h4 class="hb-lock-title"></h4>
+            <p class="hb-lock-desc">배터리 잔량을 선택한 후<br>아래 <strong>'충전하기'</strong> 버튼을 누르면<br>마음 충전 처방전이 열립니다.</p>
           </div>
           <!-- 충전 오픈 상태 -->
           <div id="hbCalmContent" style="display: none;">
@@ -745,8 +745,8 @@
         <span>⚡</span> <span id="hbChargeLabel">마음 배터리를 먼저 선택해 주세요</span>
       </button>
 
-      <!-- 오늘의 충전곡 -->
-      <aside class="hb-song-box" aria-label="오늘의 충전곡">
+<!-- 오늘의 충전곡 -->
+      <aside class="hb-song-box" id="hbSongBox" style="display: none;" aria-label="오늘의 충전곡">
         <div class="hb-song-header">
           <span class="hb-song-label">🎵 오늘의 충전곡</span>
           <span class="hb-song-name" id="hbSongName">배터리를 선택하면 맞춤 곡이 추천됩니다</span>
@@ -851,7 +851,7 @@
         
         <p class="lab-desc">
           
-          지난 4주간의 연구 결과를 토대로 <strong>최종 후보물질</strong>이 완성되었습니다.<br>배려·존중·소통·센스까지 한 알에 압축 완료!<br>
+          지난 4주간의 연구 끝에, 드디어 <strong>에티켓 신약</strong>이 완성되었습니다.<br><strong>[배려·존중·소통·센스까지 한 알에 압축 완료!]</strong><br>
           아래 캡슐을 눌러 최종 효능을 확인해보세요.<br>
           <span style="font-size: 12px; color: #db2777; font-weight: 700;">(※ 뜻밖의 효능(?)이 따라올지도 모릅니다 🎁)</span>
         </p>
@@ -876,8 +876,8 @@
             
             <!-- 공통 기본 효능 안내 -->
             <div class="base-effect-box">
-              <strong>💊배려·존중·소통·센스 성분 흡수 완료!</strong> <br>
-              오늘부터 일터의 평화를 지킬 <strong>'에티켓 히어로'</strong>로 변신 완료! 🦸‍♂️✨
+              <strong>💊배려·존중·소통·센스 충전 완료!</strong> <br>
+              이제 당신도 <strong>'에티켓 히어로'</strong>로 활약할 준비 완료! 🦸‍♂️✨
             </div>
 
             <p id="pillDesc" style="font-size: 13px; color: #4c3740; line-height: 1.5; word-break: keep-all; margin-bottom: 14px;"></p>
@@ -1600,7 +1600,7 @@
         <p>
           이번 캠페인은 빌런들이 살짝 뜨끔하길 바라는 장난기 반 🙃, 우리끼리 유쾌하게 공감하길 바라는 마음 반으로 시작했습니다. 누군가를 대놓고 지적하기보다는, 진짜 우리 일상에서 한 번쯤 겪어봤을 법한 장면들을 꺼내놓고 <span class="letter-highlight">“나는 어떤 동료였을까?”</span>를 가볍게 돌아보는 계기가 되었으면 했거든요.</p>
         <p>
-          그런데 막상 콘텐츠를 만들다 보니.... 가장 먼저 돌아보게 된 건 저 자신이었습니다🥲 고백하자면 저 역시 업무와 관계에 치여 마음의 여유를 잃는 날이 많았어요... 그렇게 방전되고 나니 평소라면 넘겼을 일에도 날이 서고, 사소한 배려마저 놓치는 제 모습을 보며<strong> ‘나 역시 누군가에게는 빌런이었겠구나’ </strong>싶어 꽤 부끄러웠답니다.
+          그런데 막상 콘텐츠를 만들다 보니.... 가장 먼저 돌아보게 된 건 저 자신이었습니다🫠 고백하자면 저 역시 업무와 관계에 치여 마음의 여유를 잃는 날이 많았어요... 그렇게 방전되고 나니 평소라면 넘겼을 일에도 날이 서고, 사소한 배려마저 놓치는 제 모습을 보며<strong> ‘나 역시 누군가에게는 빌런이었겠구나’ </strong>싶어 꽤 부끄러웠답니다. (물론 정작 사례 속 주인공들은 자기 얘기인 줄도 모른다는 소문도 들려오지만요…🥲)
         </p>
         <p>
 이번 캠페인을 진행하면서, 우리가 ‘에티켓’을 조직문화 개선과제로 꺼내 들었던 이유를 더 분명하게 느꼈습니다. 조직문화는 거창한 제도나 규제보다, <strong>매일 주고받는 작은 말과 행동</strong> 속에서 만들어지는 것 같아요. 서로를 위한 매너가 바쁜 일상 속에서도 여유와 힘이 되어주고, 함께 일하는 시간을 조금 더 편안하게 만든다고 생각했어요. 그래서 조금이라도 더 많은 분들이 공감하고, 작은 변화를 만들어낼 수 있는 콘텐츠를 만들기 위해 노력했습니다.</p>
@@ -1781,8 +1781,86 @@ function switchWeek(weekNum) {
       listenForComments(weekNum);
     }
 
+// 배터리 잔량 버튼을 클릭했을 때 (처방전과 충전곡은 아직 열리지 않음)
+    function renderBatterySelection(level) {
+      currentBatteryLevel = Number(level);
+      const item = batteryContent[currentBatteryLevel];
+      if (!item) return;
+      const filledCellCount = Math.ceil(currentBatteryLevel / 20);
+
+      // 버튼 활성화 토글
+      document.querySelectorAll('.hb-level-btn').forEach(btn => {
+        btn.setAttribute('aria-pressed', String(Number(btn.dataset.level) === currentBatteryLevel));
+      });
+
+      // 배터리 셀 채우기
+      const cells = document.querySelectorAll('#hbMeter .hb-battery-cell');
+      cells.forEach((cell, idx) => {
+        cell.classList.toggle('is-filled', idx < filledCellCount);
+      });
+      const meterEl = document.getElementById('hbMeter');
+      if (meterEl) meterEl.setAttribute('aria-valuenow', String(currentBatteryLevel));
+
+      // 진단 결과 텍스트 변경
+      const statusEl = document.getElementById('hbStatus');
+      const diagTitleEl = document.getElementById('hbDiagTitle');
+      const diagCopyEl = document.getElementById('hbDiagCopy');
+      const chargeLabelEl = document.getElementById('hbChargeLabel');
+
+      if (statusEl) {
+        statusEl.innerText = item.status;
+        statusEl.style.color = '#e65100';
+      }
+      if (diagTitleEl) diagTitleEl.innerText = item.title;
+      if (diagCopyEl) diagCopyEl.innerText = item.diagnosis;
+      if (chargeLabelEl) chargeLabelEl.innerText = item.action;
+
+      // 새 퍼센트 선택 시 진정 문구 및 충전곡 다시 잠금(숨김)
+      const placeholderEl = document.getElementById('hbCalmPlaceholder');
+      const calmContentEl = document.getElementById('hbCalmContent');
+      const calmCopyEl = document.getElementById('hbCalmCopy');
+      const songBoxEl = document.getElementById('hbSongBox');
+
+      if (placeholderEl) placeholderEl.style.display = 'flex';
+      if (calmContentEl) calmContentEl.style.display = 'none';
+      if (calmCopyEl) calmCopyEl.innerText = '';
+      if (songBoxEl) songBoxEl.style.display = 'none'; // 충전 전에는 충전곡 숨김
+    }
+
+    // [충전하기] 버튼을 클릭했을 때 (마음 진정 문구 + 오늘의 충전곡 동시 오픈)
+    function chargeHeartBattery() {
+      if (!currentBatteryLevel) {
+        alert('먼저 상단의 마음 배터리(10%~90%) 중 하나를 선택해 주세요! 🔋');
+        return;
+      }
+
+      const item = batteryContent[currentBatteryLevel];
+      if (!item) return;
+
+      // 배터리 5칸 100% 충전 애니메이션 효과
+      document.querySelectorAll('#hbMeter .hb-battery-cell').forEach(cell => cell.classList.add('is-filled'));
+      const meterEl = document.getElementById('hbMeter');
+      if (meterEl) meterEl.setAttribute('aria-valuenow', '100');
+
+      // 1. 마음 진정 처방전 봉인 해제 및 오픈
+      const placeholderEl = document.getElementById('hbCalmPlaceholder');
+      const calmContentEl = document.getElementById('hbCalmContent');
+      const calmCopyEl = document.getElementById('hbCalmCopy');
+
+      if (placeholderEl) placeholderEl.style.display = 'none';
+      if (calmContentEl) calmContentEl.style.display = 'block';
+      if (calmCopyEl) calmCopyEl.innerText = item.calm;
+
+      // 2. 오늘의 충전곡 박스 오픈 및 맞춤 곡 세팅
+      const songBoxEl = document.getElementById('hbSongBox');
+      const songNameEl = document.getElementById('hbSongName');
+      
+      if (songNameEl) songNameEl.innerText = item.song;
+      if (songBoxEl) songBoxEl.style.display = 'block'; // 동시 노출!
+    }
+
 // ----------------------------------------------------
-    // Section 3: 마음 배터리 충전소 스크립트 (완료 멘트 삭제 반영)
+    // Section 3: 마음 배터리 충전소 스크립트
     // ----------------------------------------------------
     const batteryContent = {
       10: {
@@ -1827,7 +1905,6 @@ function switchWeek(weekNum) {
       },
     };
 
-// 기본 선택값을 null로 지정 (아무것도 선택되지 않은 상태)
     let currentBatteryLevel = null;
 
     function renderBatterySelection(level) {
@@ -1836,12 +1913,10 @@ function switchWeek(weekNum) {
       if (!item) return;
       const filledCellCount = Math.ceil(currentBatteryLevel / 20);
 
-      // 버튼 활성화 토글
       document.querySelectorAll('.hb-level-btn').forEach(btn => {
         btn.setAttribute('aria-pressed', String(Number(btn.dataset.level) === currentBatteryLevel));
       });
 
-      // 배터리 셀 채우기
       const cells = document.querySelectorAll('#hbMeter .hb-battery-cell');
       cells.forEach((cell, idx) => {
         cell.classList.toggle('is-filled', idx < filledCellCount);
@@ -1849,34 +1924,31 @@ function switchWeek(weekNum) {
       const meterEl = document.getElementById('hbMeter');
       if (meterEl) meterEl.setAttribute('aria-valuenow', String(currentBatteryLevel));
 
-      // 진단 결과 및 충전곡 변경
       const statusEl = document.getElementById('hbStatus');
       const diagTitleEl = document.getElementById('hbDiagTitle');
       const diagCopyEl = document.getElementById('hbDiagCopy');
       const chargeLabelEl = document.getElementById('hbChargeLabel');
-      const songNameEl = document.getElementById('hbSongName');
 
       if (statusEl) {
         statusEl.innerText = item.status;
-        statusEl.style.color = '#e65100'; // 선택 시 강조색 복구
+        statusEl.style.color = '#e65100';
       }
       if (diagTitleEl) diagTitleEl.innerText = item.title;
       if (diagCopyEl) diagCopyEl.innerText = item.diagnosis;
       if (chargeLabelEl) chargeLabelEl.innerText = item.action;
-      if (songNameEl) songNameEl.innerText = item.song;
 
-      // 새 퍼센트 선택 시 진정 문구 다시 잠금
       const placeholderEl = document.getElementById('hbCalmPlaceholder');
       const calmContentEl = document.getElementById('hbCalmContent');
       const calmCopyEl = document.getElementById('hbCalmCopy');
+      const songBoxEl = document.getElementById('hbSongBox');
 
       if (placeholderEl) placeholderEl.style.display = 'flex';
       if (calmContentEl) calmContentEl.style.display = 'none';
       if (calmCopyEl) calmCopyEl.innerText = '';
+      if (songBoxEl) songBoxEl.style.display = 'none';
     }
 
     function chargeHeartBattery() {
-      // 아무것도 선택하지 않고 충전 버튼을 눌렀을 경우 방어
       if (!currentBatteryLevel) {
         alert('먼저 상단의 마음 배터리(10%~90%) 중 하나를 선택해 주세요! 🔋');
         return;
@@ -1885,12 +1957,10 @@ function switchWeek(weekNum) {
       const item = batteryContent[currentBatteryLevel];
       if (!item) return;
 
-      // 배터리 5칸 100% 충전
       document.querySelectorAll('#hbMeter .hb-battery-cell').forEach(cell => cell.classList.add('is-filled'));
       const meterEl = document.getElementById('hbMeter');
       if (meterEl) meterEl.setAttribute('aria-valuenow', '100');
 
-      // 봉인 해제 및 진정 문구 오픈
       const placeholderEl = document.getElementById('hbCalmPlaceholder');
       const calmContentEl = document.getElementById('hbCalmContent');
       const calmCopyEl = document.getElementById('hbCalmCopy');
@@ -1898,9 +1968,14 @@ function switchWeek(weekNum) {
       if (placeholderEl) placeholderEl.style.display = 'none';
       if (calmContentEl) calmContentEl.style.display = 'block';
       if (calmCopyEl) calmCopyEl.innerText = item.calm;
+
+      const songBoxEl = document.getElementById('hbSongBox');
+      const songNameEl = document.getElementById('hbSongName');
+      
+      if (songNameEl) songNameEl.innerText = item.song;
+      if (songBoxEl) songBoxEl.style.display = 'block';
     }
 
-    // 리스너 바인딩
     function initBatterySection() {
       document.querySelectorAll('.hb-level-btn').forEach(btn => {
         btn.addEventListener('click', () => renderBatterySelection(btn.dataset.level));
@@ -1914,6 +1989,9 @@ function switchWeek(weekNum) {
     } else {
       initBatterySection();
     }
+
+
+
 
 // ----------------------------------------------------
     // Section 4: 선착순 경쟁 없이, 모두에게 열려 있는 랜덤 리워드 로직 (잔여 수량 연출 포함)
